@@ -1,32 +1,35 @@
 package net.sayaya.ui.chart.column;
 
-import elemental2.dom.Element;
-import elemental2.dom.HTMLElement;
-import elemental2.dom.HTMLInputElement;
+import elemental2.dom.*;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.Delegate;
 import net.sayaya.ui.chart.Column;
+import net.sayaya.ui.chart.SheetElement;
 import net.sayaya.ui.chart.function.CellEditor;
 import net.sayaya.ui.chart.function.CellEditorFactory;
+import org.jboss.elemento.HtmlContentBuilder;
+import org.jboss.elemento.TextContentBuilder;
 
 import static org.jboss.elemento.Elements.*;
 
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
-public final class ColumnString implements ColumnBuilder {
+public final class ColumnText implements ColumnBuilder {
 	private final String id;
+	private final int heightMin;
+	private final int heightMax;
 	@Delegate
-	private final ColumnBuilderDefaultHelper<ColumnString> defaultHelper = new ColumnBuilderDefaultHelper<>(()->this);
+	private final ColumnBuilderDefaultHelper<ColumnText> defaultHelper = new ColumnBuilderDefaultHelper<>(()->this);
 	@Delegate
-	private final ColumnStyleTextHelper<ColumnString> textHelper = new ColumnStyleTextHelper<>(()->this);
+	private final ColumnStyleTextHelper<ColumnText> textHelper = new ColumnStyleTextHelper<>(()->this);
 	@Delegate
-	private final ColumnStyleDataChangeHelper<ColumnString> dataChangeHelper = new ColumnStyleDataChangeHelper<>(()->this);
+	private final ColumnStyleDataChangeHelper<ColumnText> dataChangeHelper = new ColumnStyleDataChangeHelper<>(()->this);
 	@Delegate
-	private final ColumnStyleColorHelper<ColumnString> colorHelper = new ColumnStyleColorHelper<>(()->this);
+	private final ColumnStyleColorHelper<ColumnText> colorHelper = new ColumnStyleColorHelper<>(()->this);
 	@Delegate
-	private final ColumnStyleColorConditionalHelper<ColumnString> colorConditionalHelper = new ColumnStyleColorConditionalHelper<>(()->this);
+	private final ColumnStyleColorConditionalHelper<ColumnText> colorConditionalHelper = new ColumnStyleColorConditionalHelper<>(()->this);
 	@Delegate
-	private final ColumnStyleAlignHelper<ColumnString> alignHelper = new ColumnStyleAlignHelper<>(()->this);
+	private final ColumnStyleAlignHelper<ColumnText> alignHelper = new ColumnStyleAlignHelper<>(()->this);
 	@Override
 	public Column build() {
 		Column column = defaultHelper.build().data(id);
@@ -41,18 +44,23 @@ public final class ColumnString implements ColumnBuilder {
 			dataChangeHelper.apply(sheet, td, row, prop);
 			colorConditionalHelper.apply(td, row, prop, value);
 			alignHelper.apply(td, row, prop, value);
-			
-			td.innerHTML = value;
+
+			String cssHeightMin = "min-height: " + (heightMin>0?heightMin:24) + "px;";
+			String cssHeightMax = "max-height: " + (heightMax>0?heightMax:200) + "px;";
+			HTMLDivElement div = div().style(cssHeightMin + cssHeightMax + "display: block; overflow-y: auto; word-break: break-all;").element();
+			div.innerHTML= value;
+			td.innerHTML = "";
+			td.appendChild(div);
 			return td;
-		}).editor(this::textFieldEditor)
+		}).editor(this::textAreaEditor)
 		.headerRenderer(n->span().textContent(defaultHelper.name()).element());
 	}
-	private CellEditor textFieldEditor(Object props) {
+	private CellEditor textAreaEditor(Object props) {
 		TextEditorImpl impl = new TextEditorImpl();
 		return CellEditorFactory.text(props, impl);
 	}
 	private final class TextEditorImpl implements CellEditorFactory.CellEditorTextImpl {
-		private final HTMLInputElement elem = input("text").element();
+		private final HTMLTextAreaElement elem = textarea().element();
 		@Override
 		public void prepare(int row, int col, String prop, HTMLElement td, String value, Object cell) {
 			textHelper.clearStyleText(td);
@@ -64,6 +72,9 @@ public final class ColumnString implements ColumnBuilder {
 			colorHelper.apply(td, row, prop, value);
 			colorConditionalHelper.apply(td, row, prop, value);
 			alignHelper.apply(td, row, prop, value);
+
+			//td.style.minHeight = CSSProperties.MinHeightUnionType.of(heightMin>0?heightMin:24);
+			//td.style.maxHeight = CSSProperties.MaxHeightUnionType.of(heightMax>0?heightMax:200);
 		}
 		@Override
 		public Element createElement() {

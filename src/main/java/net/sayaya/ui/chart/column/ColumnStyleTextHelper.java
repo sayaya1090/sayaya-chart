@@ -1,8 +1,7 @@
 package net.sayaya.ui.chart.column;
 
 import elemental2.dom.CSSProperties;
-import elemental2.dom.HTMLTableCellElement;
-import lombok.experimental.Delegate;
+import elemental2.dom.HTMLElement;
 
 import java.util.function.Supplier;
 
@@ -15,12 +14,19 @@ public final class ColumnStyleTextHelper<SELF> {
 	ColumnStyleTextHelper(Supplier<SELF> columnBuilder) {
 		_self = columnBuilder;
 	}
-	HTMLTableCellElement apply(HTMLTableCellElement td, int row, String prop, String value) {
+	HTMLElement apply(HTMLElement td, int row, String prop, String value) {
 		if(font!=null)      td.style.fontFamily = font.apply(td, row, prop, value);
 		if(fontSize!=null)  td.style.fontSize   = fontSize.apply(td, row, prop, value);
 		if(bold!=null)      td.style.fontWeight = bold.apply(td, row, prop, value)?"bold":"normal";
 		if(italic!=null)    td.style.fontStyle  = italic.apply(td, row, prop, value)?"italic":"normal";
 		return td;
+	}
+	public SELF clearStyleText(HTMLElement td) {
+		td.style.removeProperty("fontFamily");
+		td.style.removeProperty("fontSize");
+		td.style.removeProperty("fontWeight");
+		td.style.removeProperty("fontStyle");
+		return that();
 	}
 	public SELF font(String font) {
 		if(font == null) return font((ColumnStyleFn<String>)null);

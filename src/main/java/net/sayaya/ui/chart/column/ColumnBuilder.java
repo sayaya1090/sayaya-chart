@@ -6,9 +6,11 @@ import net.sayaya.ui.chart.Column;
 public interface ColumnBuilder {
 	Column build();
 
-	static ColumnString string(String id) {
-		return new ColumnString(id);
+	static ColumnString string(String id) { return new ColumnString(id); }
+	static ColumnText text(String id, int minHeight, int maxHeight) {
+		return new ColumnText(id, minHeight, maxHeight);
 	}
+	static ColumnNumber number(String id) { return new ColumnNumber(id); }
 	static ColumnCheckBox checkbox(String id) {
 		return new ColumnCheckBox(id);
 	}

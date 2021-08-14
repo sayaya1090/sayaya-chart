@@ -1,5 +1,6 @@
 package net.sayaya.ui.chart.column;
 
+import elemental2.dom.HTMLElement;
 import elemental2.dom.HTMLTableCellElement;
 
 import java.util.function.Supplier;
@@ -10,9 +11,13 @@ public final class ColumnStyleAlignHelper<SELF> {
 	ColumnStyleAlignHelper(Supplier<SELF> columnBuilder) {
 		_self = columnBuilder;
 	}
-	HTMLTableCellElement apply(HTMLTableCellElement td, int row, String prop, String value) {
+	HTMLElement apply(HTMLElement td, int row, String prop, String value) {
 		if(align!=null)     td.style.textAlign  = align.apply(td, row, prop, value);
 		return td;
+	}
+	public SELF clearStyleAlign(HTMLElement td) {
+		td.style.removeProperty("textAlign");
+		return that();
 	}
 	public SELF align(String align) {
 		if(align == null) return align((ColumnStyleFn<String>)null);

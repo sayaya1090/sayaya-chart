@@ -119,6 +119,7 @@ public class SheetElement extends HTMLElementBuilder<HTMLDivElement, SheetElemen
 		private boolean manualColumnResize;
 		private boolean manualRowMove;
 		private boolean manualColumnMove;
+		private Boolean renderAllRows;
 		private Double viewportColumnRenderingOffset;
 		private Object contextMenu;
 		private boolean autoRowSize;
@@ -168,8 +169,6 @@ public class SheetElement extends HTMLElementBuilder<HTMLDivElement, SheetElemen
 		public SheetConfiguration columns(Column... columns) {
 			this.columns = columns;
 			colHeaders = (HeaderRenderFn) n->columns[n].headerRenderer().render(n).innerHTML;
-			if(Arrays.stream(columns).anyMatch(c->c.width()!=null)) colWidths = Arrays.stream(columns).map(Column::width).map(JsNumber::new).toArray();
-			else colWidths = null;
 			return this;
 		}
 		@JsOverlay

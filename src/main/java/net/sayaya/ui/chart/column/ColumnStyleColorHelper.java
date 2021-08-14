@@ -1,5 +1,6 @@
 package net.sayaya.ui.chart.column;
 
+import elemental2.dom.HTMLElement;
 import elemental2.dom.HTMLTableCellElement;
 
 import java.util.function.Supplier;
@@ -11,10 +12,15 @@ public final class ColumnStyleColorHelper<SELF> {
 	ColumnStyleColorHelper(Supplier<SELF> columnBuilder) {
 		_self = columnBuilder;
 	}
-	HTMLTableCellElement apply(HTMLTableCellElement td, int row, String prop, String value) {
+	HTMLElement apply(HTMLElement td, int row, String prop, String value) {
 		if(color!=null)             td.style.color              = color.apply(td, row, prop, value);
 		if(colorBackground!=null)   td.style.backgroundColor    = colorBackground.apply(td, row, prop, value);
 		return td;
+	}
+	public SELF clearStyleColor(HTMLElement td) {
+		td.style.removeProperty("color");
+		td.style.removeProperty("backgroundColor");
+		return that();
 	}
 	public SELF color(String color) {
 		if(color == null) return color((ColumnStyleFn<String>)null);

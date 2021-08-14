@@ -1,8 +1,7 @@
 package net.sayaya.ui.chart.column;
 
-import com.google.gwt.regexp.shared.MatchResult;
 import com.google.gwt.regexp.shared.RegExp;
-import elemental2.dom.HTMLTableCellElement;
+import elemental2.dom.HTMLElement;
 
 import java.util.function.Supplier;
 
@@ -14,19 +13,22 @@ public final class ColumnStyleColorConditionalHelper<SELF> {
 	ColumnStyleColorConditionalHelper(Supplier<SELF> columnBuilder) {
 		_self = columnBuilder;
 	}
-	HTMLTableCellElement apply(HTMLTableCellElement td, int row, String prop, String value) {
+	HTMLElement apply(HTMLElement td, int row, String prop, String value) {
 		if(value == null) return td;
 		if(pattern == null) return td;
 		String pattern = this.pattern.apply(td, row, prop, value);
 		if(pattern == null || pattern.trim().isEmpty()) return td;
-
 		RegExp regexp = RegExp.compile(pattern.trim());
-		MatchResult m = regexp.exec(value.trim());
-		if(m!=null) {
+		if(regexp.test(value.trim())) {
 			if(colorConditional !=null)             td.style.color              = colorConditional.apply(td, row, prop, value);
 			if(colorConditionalBackground !=null)   td.style.backgroundColor    = colorConditionalBackground.apply(td, row, prop, value);
 		}
 		return td;
+	}
+	public SELF clearStyleColorConditional(HTMLElement td) {
+		td.style.removeProperty("color");
+		td.style.removeProperty("backgroundColor");
+		return that();
 	}
 	public SELF pattern(String pattern) {
 		if(pattern == null) return pattern((ColumnStyleFn<String>)null);
