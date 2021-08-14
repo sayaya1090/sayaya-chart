@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+	<inherits name='net.sayaya.UI'/>
+	<collapse-all-properties/>
+	<set-configuration-property name="CssResource.enableGss" value="TRUE" />
+</module>
