@@ -10,42 +10,43 @@ import net.sayaya.ui.chart.Column;
 import net.sayaya.ui.chart.function.CellEditor;
 import net.sayaya.ui.chart.function.CellEditorFactory;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import static org.jboss.elemento.Elements.*;
 
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 public final class ColumnString implements ColumnBuilder {
 	private final String id;
-	@Delegate
-	private final ColumnBuilderDefaultHelper<ColumnString> defaultHelper = new ColumnBuilderDefaultHelper<>(()->this);
-	@Delegate
-	private final ColumnStyleTextHelper<ColumnString> textHelper = new ColumnStyleTextHelper<>(()->this);
-	@Delegate
-	private final ColumnStyleDataChangeHelper<ColumnString> dataChangeHelper = new ColumnStyleDataChangeHelper<>(()->this);
-	@Delegate
-	private final ColumnStyleColorHelper<ColumnString> colorHelper = new ColumnStyleColorHelper<>(()->this);
-	@Delegate
-	private final ColumnStyleColorConditionalHelper<ColumnString> colorConditionalHelper = new ColumnStyleColorConditionalHelper<>(()->this);
-	@Delegate
-	private final ColumnStyleAlignHelper<ColumnString> alignHelper = new ColumnStyleAlignHelper<>(()->this);
+	@Delegate private final ColumnBuilderDefaultHelper<ColumnString> defaultHelper = new ColumnBuilderDefaultHelper<>(()->this);
+	@Delegate private final ColumnStyleTextHelper<ColumnString> textHelper = new ColumnStyleTextHelper<>(()->this);
+	@Delegate private final ColumnStyleDataChangeHelper<ColumnString> dataChangeHelper = new ColumnStyleDataChangeHelper<>(()->this);
+	@Delegate private final ColumnStyleColorHelper<ColumnString> colorHelper = new ColumnStyleColorHelper<>(()->this);
+	private final List<ColumnStyleColorConditionalHelper<ColumnString>> colorConditionalHelpers = new LinkedList<>();
+	@Delegate private final ColumnStyleAlignHelper<ColumnString> alignHelper = new ColumnStyleAlignHelper<>(()->this);
 	@Override
 	public Column build() {
 		Column column = defaultHelper.build().data(id);
 		return column.renderer((sheet, td, row, col, prop, value, ci)->{
 			textHelper.clearStyleText(td);
 			colorHelper.clearStyleColor(td);
-			colorConditionalHelper.clearStyleColorConditional(td);
+			for(ColumnStyleColorConditionalHelper<ColumnString> helper: colorConditionalHelpers) helper.clearStyleColorConditional(td);
 			alignHelper.clearStyleAlign(td);
 
 			textHelper.apply(td, row, prop, value);
 			colorHelper.apply(td, row, prop, value);
 			dataChangeHelper.apply(sheet, td, row, prop);
-			colorConditionalHelper.apply(td, row, prop, value);
+			for(ColumnStyleColorConditionalHelper<ColumnString> helper: colorConditionalHelpers) helper.apply(td, row, prop, value);
 			alignHelper.apply(td, row, prop, value);
-			
 			td.innerHTML = value;
 			return td;
 		}).editor(this::textFieldEditor)
 		.headerRenderer(n->span().textContent(defaultHelper.name()).element());
+	}
+	public ColumnStyleColorConditionalHelper<ColumnString> pattern(String pattern) {
+		ColumnStyleColorConditionalHelper<ColumnString> helper = new ColumnStyleColorConditionalHelper<>(pattern, ()->this);
+		colorConditionalHelpers.add(helper);
+		return helper;
 	}
 	private CellEditor textFieldEditor(Object props) {
 		TextEditorImpl impl = new TextEditorImpl();
@@ -57,19 +58,23 @@ public final class ColumnString implements ColumnBuilder {
 		public void prepare(int row, int col, String prop, HTMLElement td, String value, Object cell) {
 			textHelper.clearStyleText(td);
 			colorHelper.clearStyleColor(td);
-			colorConditionalHelper.clearStyleColorConditional(td);
+			for(ColumnStyleColorConditionalHelper<ColumnString> helper: colorConditionalHelpers) helper.clearStyleColorConditional(td);
 			alignHelper.clearStyleAlign(td);
 
 			textHelper.apply(td, row, prop, value);
 			colorHelper.apply(td, row, prop, value);
-			colorConditionalHelper.apply(td, row, prop, value);
+			for(ColumnStyleColorConditionalHelper<ColumnString> helper: colorConditionalHelpers) helper.apply(td, row, prop, value);
 			alignHelper.apply(td, row, prop, value);
+		}
+
+		@Override
+		public String toValue(String value) {
+			return value;
 		}
 		@Override
 		public Element createElement() {
 			return elem;
 		}
-
 		@Override
 		public void initialize(Element element) {
 

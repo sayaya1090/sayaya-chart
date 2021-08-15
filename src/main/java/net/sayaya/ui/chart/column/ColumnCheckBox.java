@@ -17,6 +17,8 @@ import org.jboss.elemento.Elements;
 import org.jboss.elemento.HtmlContentBuilder;
 import org.jboss.elemento.InputType;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.function.Supplier;
 
 import static org.jboss.elemento.Elements.*;
@@ -31,16 +33,11 @@ public final class ColumnCheckBox implements ColumnBuilder {
 		else return str;
 	}
 	private final String id;
-	@Delegate
-	private final ColumnBuilderDefaultHelper<ColumnCheckBox> defaultHelper = new ColumnBuilderDefaultHelper<>(()->this);
-	@Delegate
-	private final ColumnStyleDataChangeHelper<ColumnCheckBox> dataChangeHelper = new ColumnStyleDataChangeHelper<>(()->this);
-	@Delegate
-	private final ColumnStyleColorHelper<ColumnCheckBox> colorHelper = new ColumnStyleColorHelper<>(()->this);
-	@Delegate
-	private final ColumnStyleColorConditionalHelper<ColumnCheckBox> colorConditionalHelper = new ColumnStyleColorConditionalHelper<>(()->this);
-	@Delegate
-	private final ColumnStyleAlignHelper<ColumnCheckBox> alignHelper = new ColumnStyleAlignHelper<>(()->this);
+	@Delegate private final ColumnBuilderDefaultHelper<ColumnCheckBox> defaultHelper = new ColumnBuilderDefaultHelper<>(()->this);
+	@Delegate private final ColumnStyleDataChangeHelper<ColumnCheckBox> dataChangeHelper = new ColumnStyleDataChangeHelper<>(()->this);
+	@Delegate private final ColumnStyleColorHelper<ColumnCheckBox> colorHelper = new ColumnStyleColorHelper<>(()->this);
+	private final List<ColumnStyleColorConditionalHelper<ColumnCheckBox>> colorConditionalHelpers = new LinkedList<>();
+	@Delegate private final ColumnStyleAlignHelper<ColumnCheckBox> alignHelper = new ColumnStyleAlignHelper<>(()->this);
 	ColumnCheckBox(String id) {
 		this.id = id;
 		alignHelper.align("center");
@@ -49,24 +46,41 @@ public final class ColumnCheckBox implements ColumnBuilder {
 	public Column build() {
 		Column column = defaultHelper.build().data(id).readOnly(true);
 		return column.renderer((sheet, td, row, col, prop, value, ci)->{
-			colorHelper.apply(td, row, prop, value);
-			dataChangeHelper.apply(sheet, td, row, prop);
-			colorConditionalHelper.apply(td, row, prop, value);
-			alignHelper.apply(td, row, prop, value);
 			Data data = sheet.spreadsheet.values()[row];
 			value = normalize(value);
-			CheckBox elem = CheckBox.checkBox(value!=null?Boolean.parseBoolean(value):false).style("transform: scale(0.5)");
+			alignHelper.clearStyleAlign(td);
+			alignHelper.apply(td, row, prop, value);
+
+			colorHelper.apply(td, row, prop, value);
+			dataChangeHelper.apply(sheet, td, row, prop);
+			for(ColumnStyleColorConditionalHelper<?> helper: colorConditionalHelpers) helper.apply(td, row, prop, value==null?"false":value);
+			CheckBox elem = CheckBox.checkBox(Boolean.parseBoolean(value)).style("transform: scale(0.5)");
 			if(defaultHelper.readOnly()) elem.enabled(false);
 			else if(data!=null) elem.onValueChange(evt->{
 				data.put(id, evt!=null?String.valueOf(evt.value()):"false");
+				String v = normalize(String.valueOf(evt.value()));
+				colorHelper.clearStyleColor(td);
+				for(ColumnStyleColorConditionalHelper<?> helper: colorConditionalHelpers) helper.clearStyleColorConditional(td);
+
+				colorHelper.apply(td, row, prop, v);
 				dataChangeHelper.apply(sheet, td, row, prop);
+				for(ColumnStyleColorConditionalHelper<?> helper: colorConditionalHelpers) helper.apply(td, row, prop, v==null?"false":v);
 			});
 			td.innerHTML = "";
 			td.appendChild(elem.element());
 			return td;
 		}).headerRenderer(n->span().textContent(defaultHelper.name()).element());
 	}
-
+	public ColumnStyleColorConditionalHelper<ColumnCheckBox> isTrue() {
+		ColumnStyleColorConditionalHelper<ColumnCheckBox> helper = new ColumnStyleColorConditionalHelper<>("true", ()->this);
+		colorConditionalHelpers.add(helper);
+		return helper;
+	}
+	public ColumnStyleColorConditionalHelper<ColumnCheckBox> isFalse() {
+		ColumnStyleColorConditionalHelper<ColumnCheckBox> helper = new ColumnStyleColorConditionalHelper<>("false", ()->this);
+		colorConditionalHelpers.add(helper);
+		return helper;
+	}
 	private final static class CheckBox extends HTMLElementBuilder<HTMLDivElement, CheckBox> implements HasValueChangeHandlers<Boolean> {
 		public static CheckBox checkBox(boolean initialValue) {
 			CheckBox elem = new CheckBox(div(), initialValue);

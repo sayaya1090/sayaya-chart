@@ -47,6 +47,9 @@ public class CellEditorFactory {
 			proxy.prepare(this.row, this.col, this.prop, this.TEXTAREA, value, this.cellProperties);
 		    $wnd.Handsontable.editors.TextEditor.prototype.setValue.apply(this, arguments);
 		}
+		CustomEditorText.prototype.getValue=function() {
+		    return proxy.toValue($wnd.Handsontable.editors.TextEditor.prototype.getValue.apply(this, arguments));
+		}
 		return new CustomEditorText(prop);
 	}-*/;
 	@JsType(isNative = true)
@@ -63,6 +66,7 @@ public class CellEditorFactory {
 		Element createElement();
 		void initialize(Element element);
 		void prepare(int row, int col, String prop, HTMLElement td, String value, Object cell);
+		String toValue(String value);
 	}
 	@JsType(isNative = true, namespace="Handsontable.editors", name="BaseEditor")
 	public static abstract class CellEditorBase implements CellEditor {

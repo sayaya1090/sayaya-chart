@@ -19,6 +19,7 @@ public class Test implements EntryPoint {
 		LayoutTest();
 		TestSheet();
 		TestMergeCell();
+		TestColumnNumber();
 		TestColumnText();
 	}
 
@@ -47,9 +48,9 @@ public class Test implements EntryPoint {
 	private void TestSheet() {
 		SheetElement sheetElement = SheetElement.builder()
 				.columns(
-						ColumnBuilder.string("A").name("A").pattern("^a$").colorConditional("red").colorConditionalBackground("yellow").color("blue").build(),
+						ColumnBuilder.string("A").name("A").pattern("^a$").than("red", "yellow").color("blue").build(),
 						ColumnBuilder.number("B").format(NumberFormat.getFormat("0.00")).build(),
-						ColumnBuilder.checkbox("C").build()
+						ColumnBuilder.checkbox("C").isTrue().than("red", "yellow").isFalse().than("blue", "green").build()
 				).build();
 		SheetElementSelectableSingle.header(sheetElement);
 		content.add(sheetElement);
@@ -62,7 +63,7 @@ public class Test implements EntryPoint {
 	private void TestMergeCell() {
 		SheetElement sheetElement = SheetElement.builder()
 				.columns(
-						ColumnBuilder.string("A").name("A").pattern("^a$").colorConditional("red").colorConditionalBackground("yellow").color("blue").build(),
+						ColumnBuilder.string("A").name("A").pattern("^a$").than("red", "yellow").color("blue").build(),
 						ColumnBuilder.string("B").build(),
 						ColumnBuilder.checkbox("C").build()
 				).mergeCells(new MergeCell[]{new MergeCell().col(1).row(0).colspan(2).rowspan(3)})
@@ -74,12 +75,25 @@ public class Test implements EntryPoint {
 				new Data("2").put("A", "a"),
 				new Data("3"));
 	}
-
+	private void TestColumnNumber() {
+		SheetElement sheetElement = SheetElement.builder()
+				.columns(
+						ColumnBuilder.string("A").name("A").pattern("^a$").than("red", "yellow").color("blue").build(),
+						ColumnBuilder.number("B").format(NumberFormat.getFormat("0.00")).align("right").lt(100).than("red", "yellow").build(),
+						ColumnBuilder.number("C").readOnly(true).format(NumberFormat.getFormat("0.00")).align("right").gt(100).than("red", "yellow").build()
+						).build();
+		SheetElementSelectableSingle.header(sheetElement);
+		content.add(sheetElement);
+		sheetElement.values(
+				new Data("1").put("A", "FFF"),
+				new Data("2").put("A", "a"),
+				new Data("3"));
+	}
 	private void TestColumnText() {
 		SheetElement sheetElement = SheetElement.builder()
 				.columns(
-						ColumnBuilder.string("A").name("A").pattern("^a$").colorConditional("red").colorConditionalBackground("yellow").color("blue").build(),
-						ColumnBuilder.text("B", 30, 100).align("right").pattern("^a").colorConditional("red").colorConditionalBackground("yellow").build(),
+						ColumnBuilder.string("A").name("A").pattern("^a$").than("red","yellow").color("blue").build(),
+						ColumnBuilder.text("B", 30, 100).align("right").pattern("^a").than("red", "yellow").build(),
 						ColumnBuilder.checkbox("C").build()
 				).build();
 		SheetElementSelectableSingle.header(sheetElement);
