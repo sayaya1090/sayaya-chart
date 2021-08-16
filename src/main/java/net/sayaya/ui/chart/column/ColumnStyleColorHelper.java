@@ -12,7 +12,7 @@ public final class ColumnStyleColorHelper<SELF> {
 	public ColumnStyleColorHelper(Supplier<SELF> columnBuilder) {
 		_self = columnBuilder;
 	}
-	HTMLElement apply(HTMLElement td, int row, String prop, String value) {
+	public HTMLElement apply(HTMLElement td, int row, String prop, String value) {
 		if(color!=null)             td.style.color              = color.apply(td, row, prop, value);
 		if(colorBackground!=null)   td.style.backgroundColor    = colorBackground.apply(td, row, prop, value);
 		return td;

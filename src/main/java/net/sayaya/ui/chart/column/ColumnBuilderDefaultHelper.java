@@ -45,7 +45,7 @@ public final class ColumnBuilderDefaultHelper<SELF> {
 		if(readOnly == null) return false;
 		return readOnly();
 	}
-	Column build() {
+	public Column build() {
 		return Column.defaults().header(name).width(width!=null?width.get():null).readOnly(readOnly!=null?readOnly.get():false);
 	}
 	private SELF that() {

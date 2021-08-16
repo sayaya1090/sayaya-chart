@@ -11,7 +11,7 @@ public final class ColumnStyleAlignHelper<SELF> {
 	public ColumnStyleAlignHelper(Supplier<SELF> columnBuilder) {
 		_self = columnBuilder;
 	}
-	HTMLElement apply(HTMLElement td, int row, String prop, String value) {
+	public HTMLElement apply(HTMLElement td, int row, String prop, String value) {
 		if(align!=null)     td.style.textAlign  = align.apply(td, row, prop, value);
 		return td;
 	}

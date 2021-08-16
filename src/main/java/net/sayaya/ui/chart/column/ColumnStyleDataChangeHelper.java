@@ -12,7 +12,7 @@ public final class ColumnStyleDataChangeHelper<SELF> {
 	public ColumnStyleDataChangeHelper(Supplier<SELF> columnBuilder) {
 		_self = columnBuilder;
 	}
-	HTMLElement apply(SheetElement.Handsontable instance, HTMLElement td, int row, String prop) {
+	public HTMLElement apply(SheetElement.Handsontable instance, HTMLElement td, int row, String prop) {
 		Data data = instance.spreadsheet.values()[row];
 		if(data!=null && data.isChanged(prop)) td.classList.add("changed");
 		return td;

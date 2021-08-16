@@ -15,7 +15,7 @@ public final class ColumnStyleColorConditionalHelper<SELF> {
 		this.pattern = RegExp.compile(pattern.trim());
 		_self = columnBuilder;
 	}
-	HTMLElement apply(HTMLElement td, int row, String prop, String value) {
+	public HTMLElement apply(HTMLElement td, int row, String prop, String value) {
 		if(value == null) return td;
 		DomGlobal.console.log(value);
 		if(pattern.test(value.trim())) {

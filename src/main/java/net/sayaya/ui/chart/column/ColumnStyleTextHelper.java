@@ -14,7 +14,7 @@ public final class ColumnStyleTextHelper<SELF> {
 	public ColumnStyleTextHelper(Supplier<SELF> columnBuilder) {
 		_self = columnBuilder;
 	}
-	HTMLElement apply(HTMLElement td, int row, String prop, String value) {
+	public HTMLElement apply(HTMLElement td, int row, String prop, String value) {
 		if(font!=null)      td.style.fontFamily = font.apply(td, row, prop, value);
 		if(fontSize!=null)  td.style.fontSize   = fontSize.apply(td, row, prop, value);
 		if(bold!=null)      td.style.fontWeight = bold.apply(td, row, prop, value)?"bold":"normal";

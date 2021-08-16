@@ -23,7 +23,7 @@ public final class ColumnStyleColorRangeHelper<SELF> {
 		this.param2 = param2;
 		_self = columnBuilder;
 	}
-	HTMLElement apply(HTMLElement td, int row, String prop, String value) {
+	public HTMLElement apply(HTMLElement td, int row, String prop, String value) {
 		if(value == null || value.trim().isEmpty()) return td;
 		Double parse = Double.parseDouble(value);
 		boolean match = false;
