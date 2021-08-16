@@ -60,3 +60,13 @@ compileGwt {
     maxHeapSize = "4096M"
     jvmArgs "-XX:ReservedCodeCacheSize=512M","-Xss2M","-javaagent:${lombok}=ECJ","-generateJsInteropExport"
 }
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = "net.sayaya"
+            artifactId = "chart"
+            version = "1.0"
+            from components.java
+        }
+    }
+}
