@@ -1,13 +1,12 @@
 package net.sayaya.ui.chart.column;
 
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import net.sayaya.ui.chart.Column;
 
 import java.util.function.Supplier;
 
-@Getter(AccessLevel.PACKAGE)
+@Getter
 @Accessors(fluent = true)
 public final class ColumnBuilderDefaultHelper<SELF> implements ColumnBuilder {
 	private final Supplier<SELF> _self;
@@ -37,11 +36,11 @@ public final class ColumnBuilderDefaultHelper<SELF> implements ColumnBuilder {
 		this.readOnly = readOnly;
 		return that();
 	}
-	Integer width() {
+	public Integer width() {
 		if(width==null) return null;
 		return width();
 	}
-	boolean readOnly() {
+	public boolean readOnly() {
 		if(readOnly == null) return false;
 		return readOnly();
 	}
