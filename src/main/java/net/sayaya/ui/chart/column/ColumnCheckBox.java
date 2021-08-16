@@ -49,8 +49,9 @@ public final class ColumnCheckBox implements ColumnBuilder {
 			Data data = sheet.spreadsheet.values()[row];
 			value = normalize(value);
 			alignHelper.clearStyleAlign(td);
+			colorHelper.clearStyleColor(td);
+			for(ColumnStyleColorConditionalHelper<?> helper: colorConditionalHelpers) helper.clearStyleColorConditional(td);
 			alignHelper.apply(td, row, prop, value);
-
 			colorHelper.apply(td, row, prop, value);
 			dataChangeHelper.apply(sheet, td, row, prop);
 			for(ColumnStyleColorConditionalHelper<?> helper: colorConditionalHelpers) helper.apply(td, row, prop, value==null?"false":value);

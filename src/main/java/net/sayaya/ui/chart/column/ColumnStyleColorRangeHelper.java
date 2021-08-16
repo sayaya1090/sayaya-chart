@@ -24,7 +24,7 @@ public final class ColumnStyleColorRangeHelper<SELF> {
 		_self = columnBuilder;
 	}
 	HTMLElement apply(HTMLElement td, int row, String prop, String value) {
-		if(value == null) return td;
+		if(value == null || value.trim().isEmpty()) return td;
 		Double parse = Double.parseDouble(value);
 		boolean match = false;
 		try {switch(op) {
