@@ -24,12 +24,11 @@ import static org.jboss.elemento.EventType.bind;
 public final class ColumnDropDown implements ColumnBuilder {
 	private final String id;
 	private final ListElement<ListElement.SingleLineItem> list;
-	@Delegate
-	private final ColumnBuilderDefaultHelper<ColumnDropDown> defaultHelper = new ColumnBuilderDefaultHelper<>(()->this);
-	@Delegate private final ColumnStyleDataChangeHelper<ColumnDropDown> dataChangeHelper = new ColumnStyleDataChangeHelper<>(()->this);
-	@Delegate private final ColumnStyleColorHelper<ColumnDropDown> colorHelper = new ColumnStyleColorHelper<>(()->this);
+	@Delegate(excludes = ColumnBuilder.class) private final ColumnBuilderDefaultHelper<ColumnDropDown> defaultHelper = new ColumnBuilderDefaultHelper<>(()->this);
+	private final ColumnStyleDataChangeHelper<ColumnDropDown> dataChangeHelper = new ColumnStyleDataChangeHelper<>(()->this);
+	@Delegate(excludes = ColumnStyleHelper.class) private final ColumnStyleColorHelper<ColumnDropDown> colorHelper = new ColumnStyleColorHelper<>(()->this);
 	private final List<ColumnStyleColorConditionalHelper<ColumnDropDown>> colorConditionalHelpers = new LinkedList<>();
-	@Delegate private final ColumnStyleAlignHelper<ColumnDropDown> alignHelper = new ColumnStyleAlignHelper<>(()->this);
+	@Delegate(excludes = ColumnStyleHelper.class) private final ColumnStyleAlignHelper<ColumnDropDown> alignHelper = new ColumnStyleAlignHelper<>(()->this);
 	ColumnDropDown(String id, ListElement<ListElement.SingleLineItem> list) {
 		this.id = id;
 		this.list = list;

@@ -5,7 +5,7 @@ import elemental2.dom.HTMLElement;
 
 import java.util.function.Supplier;
 
-public final class ColumnStyleTextHelper<SELF> {
+public final class ColumnStyleTextHelper<SELF> implements ColumnStyleHelper {
 	private final Supplier<SELF> _self;
 	private ColumnStyleFn<String> font;
 	private ColumnStyleFn<CSSProperties.FontSizeUnionType> fontSize;
@@ -14,6 +14,7 @@ public final class ColumnStyleTextHelper<SELF> {
 	public ColumnStyleTextHelper(Supplier<SELF> columnBuilder) {
 		_self = columnBuilder;
 	}
+	@Override
 	public HTMLElement apply(HTMLElement td, int row, String prop, String value) {
 		if(font!=null)      td.style.fontFamily = font.apply(td, row, prop, value);
 		if(fontSize!=null)  td.style.fontSize   = fontSize.apply(td, row, prop, value);

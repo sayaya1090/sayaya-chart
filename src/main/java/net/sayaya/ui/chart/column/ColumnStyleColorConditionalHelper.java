@@ -6,7 +6,7 @@ import elemental2.dom.HTMLElement;
 
 import java.util.function.Supplier;
 
-public final class ColumnStyleColorConditionalHelper<SELF> {
+public final class ColumnStyleColorConditionalHelper<SELF> implements ColumnStyleHelper {
 	private final RegExp pattern;
 	private ColumnStyleFn<String> color;
 	private ColumnStyleFn<String> colorBackground;
@@ -15,6 +15,7 @@ public final class ColumnStyleColorConditionalHelper<SELF> {
 		this.pattern = RegExp.compile(pattern.trim());
 		_self = columnBuilder;
 	}
+	@Override
 	public HTMLElement apply(HTMLElement td, int row, String prop, String value) {
 		if(value == null) return td;
 		DomGlobal.console.log(value);

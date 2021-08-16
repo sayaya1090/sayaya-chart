@@ -18,12 +18,12 @@ import static org.jboss.elemento.Elements.*;
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 public final class ColumnString implements ColumnBuilder {
 	private final String id;
-	@Delegate private final ColumnBuilderDefaultHelper<ColumnString> defaultHelper = new ColumnBuilderDefaultHelper<>(()->this);
-	@Delegate private final ColumnStyleTextHelper<ColumnString> textHelper = new ColumnStyleTextHelper<>(()->this);
-	@Delegate private final ColumnStyleDataChangeHelper<ColumnString> dataChangeHelper = new ColumnStyleDataChangeHelper<>(()->this);
-	@Delegate private final ColumnStyleColorHelper<ColumnString> colorHelper = new ColumnStyleColorHelper<>(()->this);
+	@Delegate(excludes = ColumnBuilder.class) private final ColumnBuilderDefaultHelper<ColumnString> defaultHelper = new ColumnBuilderDefaultHelper<>(()->this);
+	@Delegate(excludes = ColumnStyleHelper.class) private final ColumnStyleTextHelper<ColumnString> textHelper = new ColumnStyleTextHelper<>(()->this);
+	private final ColumnStyleDataChangeHelper<ColumnString> dataChangeHelper = new ColumnStyleDataChangeHelper<>(()->this);
+	@Delegate(excludes = ColumnStyleHelper.class) private final ColumnStyleColorHelper<ColumnString> colorHelper = new ColumnStyleColorHelper<>(()->this);
 	private final List<ColumnStyleColorConditionalHelper<ColumnString>> colorConditionalHelpers = new LinkedList<>();
-	@Delegate private final ColumnStyleAlignHelper<ColumnString> alignHelper = new ColumnStyleAlignHelper<>(()->this);
+	@Delegate(excludes = ColumnStyleHelper.class) private final ColumnStyleAlignHelper<ColumnString> alignHelper = new ColumnStyleAlignHelper<>(()->this);
 	@Override
 	public Column build() {
 		Column column = defaultHelper.build().data(id);

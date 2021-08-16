@@ -28,12 +28,12 @@ public final class ColumnNumber implements ColumnBuilder {
 	private final static JsRegExp CHK_NUMBER = new JsRegExp("^\\d*(\\.\\d*)?$");
 	private final String id;
 	private NumberFormat format = NumberFormat.getDecimalFormat();
-	@Delegate private final ColumnBuilderDefaultHelper<ColumnNumber> defaultHelper = new ColumnBuilderDefaultHelper<>(()->this);
-	@Delegate private final ColumnStyleTextHelper<ColumnNumber> textHelper = new ColumnStyleTextHelper<>(()->this);
-	@Delegate private final ColumnStyleDataChangeHelper<ColumnNumber> dataChangeHelper = new ColumnStyleDataChangeHelper<>(()->this);
-	@Delegate private final ColumnStyleColorHelper<ColumnNumber> colorHelper = new ColumnStyleColorHelper<>(()->this);
+	@Delegate(excludes = ColumnBuilder.class) private final ColumnBuilderDefaultHelper<ColumnNumber> defaultHelper = new ColumnBuilderDefaultHelper<>(()->this);
+	@Delegate(excludes = ColumnStyleHelper.class) private final ColumnStyleTextHelper<ColumnNumber> textHelper = new ColumnStyleTextHelper<>(()->this);
+	private final ColumnStyleDataChangeHelper<ColumnNumber> dataChangeHelper = new ColumnStyleDataChangeHelper<>(()->this);
+	@Delegate(excludes = ColumnStyleHelper.class) private final ColumnStyleColorHelper<ColumnNumber> colorHelper = new ColumnStyleColorHelper<>(()->this);
 	private final List<ColumnStyleColorRangeHelper<ColumnNumber>> colorRangeHelpers = new LinkedList<>();
-	@Delegate private final ColumnStyleAlignHelper<ColumnNumber> alignHelper = new ColumnStyleAlignHelper<>(()->this);
+	@Delegate(excludes = ColumnStyleHelper.class) private final ColumnStyleAlignHelper<ColumnNumber> alignHelper = new ColumnStyleAlignHelper<>(()->this);
 	private static String toString(NumberFormat NF, Object value) throws RuntimeException {
 		if(value == null) return null;
 		else if(value instanceof Long) return NF.format((Long)value);

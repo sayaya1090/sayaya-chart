@@ -1,17 +1,17 @@
 package net.sayaya.ui.chart.column;
 
 import elemental2.dom.HTMLElement;
-import elemental2.dom.HTMLTableCellElement;
 
 import java.util.function.Supplier;
 
-public final class ColumnStyleColorHelper<SELF> {
+public final class ColumnStyleColorHelper<SELF> implements ColumnStyleHelper {
 	private final Supplier<SELF> _self;
 	private ColumnStyleFn<String> color;
 	private ColumnStyleFn<String> colorBackground;
 	public ColumnStyleColorHelper(Supplier<SELF> columnBuilder) {
 		_self = columnBuilder;
 	}
+	@Override
 	public HTMLElement apply(HTMLElement td, int row, String prop, String value) {
 		if(color!=null)             td.style.color              = color.apply(td, row, prop, value);
 		if(colorBackground!=null)   td.style.backgroundColor    = colorBackground.apply(td, row, prop, value);

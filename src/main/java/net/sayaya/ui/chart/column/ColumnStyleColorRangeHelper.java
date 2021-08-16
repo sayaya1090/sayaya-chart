@@ -4,7 +4,7 @@ import elemental2.dom.HTMLElement;
 
 import java.util.function.Supplier;
 
-public final class ColumnStyleColorRangeHelper<SELF> {
+public final class ColumnStyleColorRangeHelper<SELF> implements ColumnStyleHelper {
 	enum Operation {
 		EQ, LT, GT, LE, GE, BW, BWE
 	}
@@ -23,6 +23,7 @@ public final class ColumnStyleColorRangeHelper<SELF> {
 		this.param2 = param2;
 		_self = columnBuilder;
 	}
+	@Override
 	public HTMLElement apply(HTMLElement td, int row, String prop, String value) {
 		if(value == null || value.trim().isEmpty()) return td;
 		Double parse = Double.parseDouble(value);

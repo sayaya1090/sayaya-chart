@@ -21,12 +21,12 @@ public final class ColumnText implements ColumnBuilder {
 	private final String id;
 	private final int heightMin;
 	private final int heightMax;
-	@Delegate private final ColumnBuilderDefaultHelper<ColumnText> defaultHelper = new ColumnBuilderDefaultHelper<>(()->this);
-	@Delegate private final ColumnStyleTextHelper<ColumnText> textHelper = new ColumnStyleTextHelper<>(()->this);
-	@Delegate private final ColumnStyleDataChangeHelper<ColumnText> dataChangeHelper = new ColumnStyleDataChangeHelper<>(()->this);
-	@Delegate private final ColumnStyleColorHelper<ColumnText> colorHelper = new ColumnStyleColorHelper<>(()->this);
+	@Delegate(excludes = ColumnBuilder.class) private final ColumnBuilderDefaultHelper<ColumnText> defaultHelper = new ColumnBuilderDefaultHelper<>(()->this);
+	@Delegate(excludes = ColumnStyleHelper.class) private final ColumnStyleTextHelper<ColumnText> textHelper = new ColumnStyleTextHelper<>(()->this);
+	private final ColumnStyleDataChangeHelper<ColumnText> dataChangeHelper = new ColumnStyleDataChangeHelper<>(()->this);
+	@Delegate(excludes = ColumnStyleHelper.class) private final ColumnStyleColorHelper<ColumnText> colorHelper = new ColumnStyleColorHelper<>(()->this);
 	private final List<ColumnStyleColorConditionalHelper<ColumnText>> colorConditionalHelpers = new LinkedList<>();
-	@Delegate private final ColumnStyleAlignHelper<ColumnText> alignHelper = new ColumnStyleAlignHelper<>(()->this);
+	@Delegate(excludes = ColumnStyleHelper.class) private final ColumnStyleAlignHelper<ColumnText> alignHelper = new ColumnStyleAlignHelper<>(()->this);
 	@Override
 	public Column build() {
 		Column column = defaultHelper.build().data(id);
