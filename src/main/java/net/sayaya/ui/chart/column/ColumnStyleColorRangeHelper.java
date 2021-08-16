@@ -14,10 +14,10 @@ public final class ColumnStyleColorRangeHelper<SELF> {
 	private ColumnStyleFn<String> color;
 	private ColumnStyleFn<String> colorBackground;
 	private final Supplier<SELF> _self;
-	ColumnStyleColorRangeHelper(Operation op, double param1, Supplier<SELF> columnBuilder) {
+	public ColumnStyleColorRangeHelper(Operation op, double param1, Supplier<SELF> columnBuilder) {
 		this(op, param1, null, columnBuilder);
 	}
-	ColumnStyleColorRangeHelper(Operation op, double param1, Double param2, Supplier<SELF> columnBuilder) {
+	public ColumnStyleColorRangeHelper(Operation op, double param1, Double param2, Supplier<SELF> columnBuilder) {
 		this.op = op;
 		this.param1 = param1;
 		this.param2 = param2;

@@ -8,7 +8,7 @@ import java.util.function.Supplier;
 public final class ColumnStyleAlignHelper<SELF> {
 	private final Supplier<SELF> _self;
 	private ColumnStyleFn<String> align;
-	ColumnStyleAlignHelper(Supplier<SELF> columnBuilder) {
+	public ColumnStyleAlignHelper(Supplier<SELF> columnBuilder) {
 		_self = columnBuilder;
 	}
 	HTMLElement apply(HTMLElement td, int row, String prop, String value) {

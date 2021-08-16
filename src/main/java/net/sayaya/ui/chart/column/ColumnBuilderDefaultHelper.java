@@ -14,7 +14,7 @@ public final class ColumnBuilderDefaultHelper<SELF> {
 	private String name;
 	private Supplier<Integer> width;
 	private Supplier<Boolean> readOnly;
-	ColumnBuilderDefaultHelper(Supplier<SELF> columnBuilder) {
+	public ColumnBuilderDefaultHelper(Supplier<SELF> columnBuilder) {
 		_self = columnBuilder;
 	}
 	public SELF name(String name) {

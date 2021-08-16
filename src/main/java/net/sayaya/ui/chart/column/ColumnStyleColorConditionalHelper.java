@@ -11,7 +11,7 @@ public final class ColumnStyleColorConditionalHelper<SELF> {
 	private ColumnStyleFn<String> color;
 	private ColumnStyleFn<String> colorBackground;
 	private final Supplier<SELF> _self;
-	ColumnStyleColorConditionalHelper(String pattern, Supplier<SELF> columnBuilder) {
+	public ColumnStyleColorConditionalHelper(String pattern, Supplier<SELF> columnBuilder) {
 		this.pattern = RegExp.compile(pattern.trim());
 		_self = columnBuilder;
 	}

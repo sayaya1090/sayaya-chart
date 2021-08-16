@@ -9,7 +9,7 @@ public final class ColumnStyleColorHelper<SELF> {
 	private final Supplier<SELF> _self;
 	private ColumnStyleFn<String> color;
 	private ColumnStyleFn<String> colorBackground;
-	ColumnStyleColorHelper(Supplier<SELF> columnBuilder) {
+	public ColumnStyleColorHelper(Supplier<SELF> columnBuilder) {
 		_self = columnBuilder;
 	}
 	HTMLElement apply(HTMLElement td, int row, String prop, String value) {

@@ -9,7 +9,7 @@ import java.util.function.Supplier;
 
 public final class ColumnStyleDataChangeHelper<SELF> {
 	private final Supplier<SELF> _self;
-	ColumnStyleDataChangeHelper(Supplier<SELF> columnBuilder) {
+	public ColumnStyleDataChangeHelper(Supplier<SELF> columnBuilder) {
 		_self = columnBuilder;
 	}
 	HTMLElement apply(SheetElement.Handsontable instance, HTMLElement td, int row, String prop) {

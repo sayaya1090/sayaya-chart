@@ -11,7 +11,7 @@ public final class ColumnStyleTextHelper<SELF> {
 	private ColumnStyleFn<CSSProperties.FontSizeUnionType> fontSize;
 	private ColumnStyleFn<Boolean> bold;
 	private ColumnStyleFn<Boolean> italic;
-	ColumnStyleTextHelper(Supplier<SELF> columnBuilder) {
+	public ColumnStyleTextHelper(Supplier<SELF> columnBuilder) {
 		_self = columnBuilder;
 	}
 	HTMLElement apply(HTMLElement td, int row, String prop, String value) {
