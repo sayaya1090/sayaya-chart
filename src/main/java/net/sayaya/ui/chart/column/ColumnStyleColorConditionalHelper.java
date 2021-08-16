@@ -6,7 +6,7 @@ import elemental2.dom.HTMLElement;
 
 import java.util.function.Supplier;
 
-public final class ColumnStyleColorConditionalHelper<SELF> implements ColumnStyleHelper {
+public final class ColumnStyleColorConditionalHelper<SELF> implements ColumnStyleHelper<SELF> {
 	private final RegExp pattern;
 	private ColumnStyleFn<String> color;
 	private ColumnStyleFn<String> colorBackground;
@@ -25,7 +25,8 @@ public final class ColumnStyleColorConditionalHelper<SELF> implements ColumnStyl
 		}
 		return td;
 	}
-	public SELF clearStyleColorConditional(HTMLElement td) {
+	@Override
+	public SELF clear(HTMLElement td) {
 		td.style.removeProperty("color");
 		td.style.removeProperty("backgroundColor");
 		return that();

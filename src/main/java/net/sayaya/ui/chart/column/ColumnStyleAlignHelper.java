@@ -4,7 +4,7 @@ import elemental2.dom.HTMLElement;
 
 import java.util.function.Supplier;
 
-public final class ColumnStyleAlignHelper<SELF> implements ColumnStyleHelper {
+public final class ColumnStyleAlignHelper<SELF> implements ColumnStyleHelper<SELF> {
 	private final Supplier<SELF> _self;
 	private ColumnStyleFn<String> align;
 	public ColumnStyleAlignHelper(Supplier<SELF> columnBuilder) {
@@ -15,7 +15,8 @@ public final class ColumnStyleAlignHelper<SELF> implements ColumnStyleHelper {
 		if(align!=null)     td.style.textAlign  = align.apply(td, row, prop, value);
 		return td;
 	}
-	public SELF clearStyleAlign(HTMLElement td) {
+	@Override
+	public SELF clear(HTMLElement td) {
 		td.style.removeProperty("textAlign");
 		return that();
 	}

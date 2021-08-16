@@ -4,7 +4,7 @@ import elemental2.dom.HTMLElement;
 
 import java.util.function.Supplier;
 
-public final class ColumnStyleColorHelper<SELF> implements ColumnStyleHelper {
+public final class ColumnStyleColorHelper<SELF> implements ColumnStyleHelper<SELF> {
 	private final Supplier<SELF> _self;
 	private ColumnStyleFn<String> color;
 	private ColumnStyleFn<String> colorBackground;
@@ -17,7 +17,8 @@ public final class ColumnStyleColorHelper<SELF> implements ColumnStyleHelper {
 		if(colorBackground!=null)   td.style.backgroundColor    = colorBackground.apply(td, row, prop, value);
 		return td;
 	}
-	public SELF clearStyleColor(HTMLElement td) {
+	@Override
+	public SELF clear(HTMLElement td) {
 		td.style.removeProperty("color");
 		td.style.removeProperty("backgroundColor");
 		return that();

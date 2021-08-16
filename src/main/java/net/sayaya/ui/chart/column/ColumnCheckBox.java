@@ -48,9 +48,9 @@ public final class ColumnCheckBox implements ColumnBuilder {
 		return column.renderer((sheet, td, row, col, prop, value, ci)->{
 			Data data = sheet.spreadsheet.values()[row];
 			value = normalize(value);
-			alignHelper.clearStyleAlign(td);
-			colorHelper.clearStyleColor(td);
-			for(ColumnStyleColorConditionalHelper<?> helper: colorConditionalHelpers) helper.clearStyleColorConditional(td);
+			alignHelper.clear(td);
+			colorHelper.clear(td);
+			for(ColumnStyleColorConditionalHelper<?> helper: colorConditionalHelpers) helper.clear(td);
 			alignHelper.apply(td, row, prop, value);
 			colorHelper.apply(td, row, prop, value);
 			dataChangeHelper.apply(sheet, td, row, prop);
@@ -60,8 +60,8 @@ public final class ColumnCheckBox implements ColumnBuilder {
 			else if(data!=null) elem.onValueChange(evt->{
 				data.put(id, evt!=null?String.valueOf(evt.value()):"false");
 				String v = normalize(String.valueOf(evt.value()));
-				colorHelper.clearStyleColor(td);
-				for(ColumnStyleColorConditionalHelper<?> helper: colorConditionalHelpers) helper.clearStyleColorConditional(td);
+				colorHelper.clear(td);
+				for(ColumnStyleColorConditionalHelper<?> helper: colorConditionalHelpers) helper.clear(td);
 
 				colorHelper.apply(td, row, prop, v);
 				dataChangeHelper.apply(sheet, td, row, prop);

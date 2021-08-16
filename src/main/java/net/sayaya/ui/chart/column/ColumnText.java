@@ -31,10 +31,10 @@ public final class ColumnText implements ColumnBuilder {
 	public Column build() {
 		Column column = defaultHelper.build().data(id);
 		return column.renderer((sheet, td, row, col, prop, value, ci)->{
-			textHelper.clearStyleText(td);
-			colorHelper.clearStyleColor(td);
-			for(ColumnStyleColorConditionalHelper<ColumnText> helper: colorConditionalHelpers) helper.clearStyleColorConditional(td);
-			alignHelper.clearStyleAlign(td);
+			textHelper.clear(td);
+			colorHelper.clear(td);
+			for(ColumnStyleColorConditionalHelper<ColumnText> helper: colorConditionalHelpers) helper.clear(td);
+			alignHelper.clear(td);
 
 			textHelper.apply(td, row, prop, value);
 			colorHelper.apply(td, row, prop, value);
@@ -65,10 +65,10 @@ public final class ColumnText implements ColumnBuilder {
 		private final HTMLTextAreaElement elem = textarea().element();
 		@Override
 		public void prepare(int row, int col, String prop, HTMLElement td, String value, Object cell) {
-			textHelper.clearStyleText(td);
-			colorHelper.clearStyleColor(td);
-			for(ColumnStyleColorConditionalHelper<ColumnText> helper: colorConditionalHelpers) helper.clearStyleColorConditional(td);
-			alignHelper.clearStyleAlign(td);
+			textHelper.clear(td);
+			colorHelper.clear(td);
+			for(ColumnStyleColorConditionalHelper<ColumnText> helper: colorConditionalHelpers) helper.clear(td);
+			alignHelper.clear(td);
 
 			textHelper.apply(td, row, prop, value);
 			colorHelper.apply(td, row, prop, value);

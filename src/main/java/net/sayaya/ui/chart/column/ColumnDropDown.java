@@ -37,9 +37,9 @@ public final class ColumnDropDown implements ColumnBuilder {
 	public Column build() {
 		Column column = defaultHelper.build().data(id).readOnly(true);
 		return column.renderer((sheet, td, row, col, prop, value, ci)->{
-			alignHelper.clearStyleAlign(td);
-			colorHelper.clearStyleColor(td);
-			for(ColumnStyleColorConditionalHelper<?> helper: colorConditionalHelpers) helper.clearStyleColorConditional(td);
+			alignHelper.clear(td);
+			colorHelper.clear(td);
+			for(ColumnStyleColorConditionalHelper<?> helper: colorConditionalHelpers) helper.clear(td);
 			alignHelper.apply(td, row, prop, value);
 			colorHelper.apply(td, row, prop, value);
 			dataChangeHelper.apply(sheet, td, row, prop);

@@ -4,7 +4,7 @@ import elemental2.dom.HTMLElement;
 
 import java.util.function.Supplier;
 
-public final class ColumnStyleColorRangeHelper<SELF> implements ColumnStyleHelper {
+public final class ColumnStyleColorRangeHelper<SELF> implements ColumnStyleHelper<SELF> {
 	enum Operation {
 		EQ, LT, GT, LE, GE, BW, BWE
 	}
@@ -44,7 +44,8 @@ public final class ColumnStyleColorRangeHelper<SELF> implements ColumnStyleHelpe
 		}
 		return td;
 	}
-	public SELF clearStyleColorRange(HTMLElement td) {
+	@Override
+	public SELF clear(HTMLElement td) {
 		td.style.removeProperty("color");
 		td.style.removeProperty("backgroundColor");
 		return that();

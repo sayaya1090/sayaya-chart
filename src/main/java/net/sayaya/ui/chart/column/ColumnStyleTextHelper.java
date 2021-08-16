@@ -5,7 +5,7 @@ import elemental2.dom.HTMLElement;
 
 import java.util.function.Supplier;
 
-public final class ColumnStyleTextHelper<SELF> implements ColumnStyleHelper {
+public final class ColumnStyleTextHelper<SELF> implements ColumnStyleHelper<SELF> {
 	private final Supplier<SELF> _self;
 	private ColumnStyleFn<String> font;
 	private ColumnStyleFn<CSSProperties.FontSizeUnionType> fontSize;
@@ -22,7 +22,8 @@ public final class ColumnStyleTextHelper<SELF> implements ColumnStyleHelper {
 		if(italic!=null)    td.style.fontStyle  = italic.apply(td, row, prop, value)?"italic":"normal";
 		return td;
 	}
-	public SELF clearStyleText(HTMLElement td) {
+	@Override
+	public SELF clear(HTMLElement td) {
 		td.style.removeProperty("fontFamily");
 		td.style.removeProperty("fontSize");
 		td.style.removeProperty("fontWeight");
