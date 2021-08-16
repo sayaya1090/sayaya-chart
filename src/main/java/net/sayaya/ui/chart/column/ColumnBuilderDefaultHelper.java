@@ -9,7 +9,7 @@ import java.util.function.Supplier;
 
 @Getter(AccessLevel.PACKAGE)
 @Accessors(fluent = true)
-public final class ColumnBuilderDefaultHelper<SELF> {
+public final class ColumnBuilderDefaultHelper<SELF> implements ColumnBuilder {
 	private final Supplier<SELF> _self;
 	private String name;
 	private Supplier<Integer> width;
@@ -45,6 +45,7 @@ public final class ColumnBuilderDefaultHelper<SELF> {
 		if(readOnly == null) return false;
 		return readOnly();
 	}
+	@Override
 	public Column build() {
 		return Column.defaults().header(name).width(width!=null?width.get():null).readOnly(readOnly!=null?readOnly.get():false);
 	}
