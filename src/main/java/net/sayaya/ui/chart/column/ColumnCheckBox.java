@@ -19,7 +19,6 @@ import org.jboss.elemento.InputType;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.function.Supplier;
 
 import static org.jboss.elemento.Elements.*;
 
@@ -40,7 +39,7 @@ public final class ColumnCheckBox implements ColumnBuilder {
 	@Delegate(excludes = ColumnStyleHelper.class) private final ColumnStyleAlignHelper<ColumnCheckBox> alignHelper = new ColumnStyleAlignHelper<>(()->this);
 	ColumnCheckBox(String id) {
 		this.id = id;
-		alignHelper.align("center");
+		alignHelper.horizontal("center");
 	}
 	@Override
 	public Column build() {

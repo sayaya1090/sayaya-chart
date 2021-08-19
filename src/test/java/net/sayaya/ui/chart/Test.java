@@ -65,8 +65,8 @@ public class Test implements EntryPoint {
 		SheetElement sheetElement = SheetElement.builder()
 				.columns(
 						ColumnBuilder.string("A").name("A").pattern("^a$").than("red", "yellow").color("blue").build(),
-						ColumnBuilder.number("B").format(NumberFormat.getFormat("0.00")).align("right").lt(100).than("red", "yellow").build(),
-						ColumnBuilder.number("C").readOnly(true).format(NumberFormat.getFormat("0.00")).align("right").gt(100).than("red", "yellow").build()
+						ColumnBuilder.number("B").format(NumberFormat.getFormat("0.00")).horizontal("right").lt(100).than("red", "yellow").build(),
+						ColumnBuilder.number("C").readOnly(true).format(NumberFormat.getFormat("0.00")).horizontal("right").gt(100).than("red", "yellow").build()
 						).build();
 		SheetElementSelectableSingle.header(sheetElement);
 		content.add(sheetElement);
@@ -79,7 +79,7 @@ public class Test implements EntryPoint {
 		SheetElement sheetElement = SheetElement.builder()
 				.columns(
 						ColumnBuilder.string("A").name("A").pattern("^a$").than("red","yellow").color("blue").build(),
-						ColumnBuilder.text("B", 30, 100).align("right").pattern("^a").than("red", "yellow").build(),
+						ColumnBuilder.text("B", 30, 100).horizontal("right").pattern("^a").than("red", "yellow").build(),
 						ColumnBuilder.checkbox("C").build()
 				).build();
 		SheetElementSelectableSingle.header(sheetElement);
@@ -93,7 +93,7 @@ public class Test implements EntryPoint {
 		SheetElement sheetElement = SheetElement.builder()
 				.columns(
 						ColumnBuilder.string("A").name("A").pattern("^a$").than("red","yellow").color("blue").build(),
-						ColumnBuilder.text("B", 30, 100).align("right").pattern("^a").than("red", "yellow").build(),
+						ColumnBuilder.text("B", 30, 100).horizontal("right").pattern("^a").than("red", "yellow").build(),
 						ColumnBuilder.dropdown("C", ListElement.singleLineList()
 								.add(ListElement.singleLine().label("A"))
 								.add(ListElement.singleLine().label("B"))
