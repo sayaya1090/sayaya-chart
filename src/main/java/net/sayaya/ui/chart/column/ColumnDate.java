@@ -137,7 +137,12 @@ public final class ColumnDate implements ColumnBuilder {
 		}
 		@Override
 		public void setValue(String value) {
-			elem.value =DTF.format((format.parse(value)));
+			if(value == null || value.trim().isEmpty()) elem.value = null;
+			else try {
+				elem.value = DTF.format((format.parse(value)));
+			} catch(Exception e) {
+				elem.value = null;
+			}
 		}
 		@Override
 		public Element createElement() {
