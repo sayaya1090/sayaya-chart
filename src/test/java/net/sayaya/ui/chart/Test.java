@@ -1,6 +1,7 @@
 package net.sayaya.ui.chart;
 
 import com.google.gwt.core.client.*;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
 import elemental2.dom.*;
 import net.sayaya.ui.DrawerElement;
@@ -10,6 +11,8 @@ import net.sayaya.ui.TopBarElement;
 import net.sayaya.ui.chart.column.ColumnBuilder;
 import org.jboss.elemento.Elements;
 import org.jboss.elemento.HtmlContentBuilder;
+
+import java.util.Date;
 
 import static org.jboss.elemento.Elements.*;
 
@@ -21,6 +24,7 @@ public class Test implements EntryPoint {
 		TestSheet();
 		TestMergeCell();
 		TestColumnNumber();
+		TestColumnDate();
 		TestColumnText();
 		TestColumnDropDown();
 	}
@@ -68,6 +72,20 @@ public class Test implements EntryPoint {
 						ColumnBuilder.number("B").format(NumberFormat.getFormat("0.00")).horizontal("right").lt(100).than("red", "yellow").build(),
 						ColumnBuilder.number("C").readOnly(true).format(NumberFormat.getFormat("0.00")).horizontal("right").gt(100).than("red", "yellow").build()
 						).build();
+		SheetElementSelectableSingle.header(sheetElement);
+		content.add(sheetElement);
+		sheetElement.values(
+				new Data("1").put("A", "FFF"),
+				new Data("2").put("A", "a"),
+				new Data("3"));
+	}
+	private void TestColumnDate() {
+		SheetElement sheetElement = SheetElement.builder()
+				.columns(
+						ColumnBuilder.string("A").name("A").pattern("^a$").than("red", "yellow").color("blue").build(),
+						ColumnBuilder.date("B").width(300).format(DateTimeFormat.getFormat("MMM-dd-yyyy")).horizontal("center").lt(new Date()).than("red", "yellow").build(),
+						ColumnBuilder.date("C").readOnly(true).format(DateTimeFormat.getFormat("yy-MMM")).horizontal("center").gt(new Date()).than("red", "yellow").build()
+				).build();
 		SheetElementSelectableSingle.header(sheetElement);
 		content.add(sheetElement);
 		sheetElement.values(
