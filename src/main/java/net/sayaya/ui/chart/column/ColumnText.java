@@ -83,6 +83,10 @@ public final class ColumnText implements ColumnBuilder {
 			return value;
 		}
 		@Override
+		public void setValue(String value) {
+			elem.value = value;
+		}
+		@Override
 		public Element createElement() {
 			return elem;
 		}

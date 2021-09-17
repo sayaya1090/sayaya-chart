@@ -12,6 +12,7 @@ public interface ColumnBuilder {
 		return new ColumnText(id, minHeight, maxHeight);
 	}
 	static ColumnNumber number(String id) { return new ColumnNumber(id); }
+	static ColumnDate date(String id) { return new ColumnDate(id); }
 	static ColumnCheckBox checkbox(String id) {
 		return new ColumnCheckBox(id);
 	}

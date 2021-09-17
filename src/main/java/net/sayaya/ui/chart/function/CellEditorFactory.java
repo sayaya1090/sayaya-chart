@@ -46,6 +46,7 @@ public class CellEditorFactory {
 		CustomEditorText.prototype.setValue=function(value){
 			proxy.prepare(this.row, this.col, this.prop, this.TEXTAREA, value, this.cellProperties);
 		    $wnd.Handsontable.editors.TextEditor.prototype.setValue.apply(this, arguments);
+		    proxy.setValue(value);
 		}
 		CustomEditorText.prototype.getValue=function() {
 		    return proxy.toValue($wnd.Handsontable.editors.TextEditor.prototype.getValue.apply(this, arguments));
@@ -65,6 +66,7 @@ public class CellEditorFactory {
 	public interface CellEditorTextImpl {
 		Element createElement();
 		void initialize(Element element);
+		void setValue(String stringfiedInitialValue);
 		void prepare(int row, int col, String prop, HTMLElement td, String value, Object cell);
 		String toValue(String value);
 	}

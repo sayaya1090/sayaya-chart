@@ -98,8 +98,7 @@ public final class ColumnNumber implements ColumnBuilder {
 		return helper;
 	}
 	private CellEditor numberFieldEditor(Object props) {
-		NumberEditorImpl impl = new NumberEditorImpl();
-		return CellEditorFactory.text(props, impl);
+		return CellEditorFactory.text(props, new NumberEditorImpl());
 	}
 	private final class NumberEditorImpl implements CellEditorFactory.CellEditorTextImpl {
 		private final HTMLInputElement elem = input("text").element();
@@ -125,12 +124,14 @@ public final class ColumnNumber implements ColumnBuilder {
 				return null;
 			}
 		}
-
+		@Override
+		public void setValue(String value) {
+			elem.value = value;
+		}
 		@Override
 		public Element createElement() {
 			return elem;
 		}
-
 		@Override
 		public void initialize(Element element) {
 
