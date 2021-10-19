@@ -13,6 +13,7 @@ import lombok.experimental.Accessors;
 import net.sayaya.ui.HTMLElementBuilder;
 import net.sayaya.ui.chart.function.AfterGetColumnHeaderRenderers;
 import net.sayaya.ui.chart.function.AfterGetRowHeaderRenderers;
+import net.sayaya.ui.chart.function.MouseEventHandler;
 import org.jboss.elemento.HtmlContentBuilder;
 
 import java.util.Arrays;
@@ -135,6 +136,11 @@ public class SheetElement extends HTMLElementBuilder<HTMLDivElement, SheetElemen
 		// Events
 		private AfterGetColumnHeaderRenderers afterGetColumnHeaderRenderers;
 		private AfterGetRowHeaderRenderers afterGetRowHeaderRenderers;
+		private MouseEventHandler afterOnCellMouseDown;
+		private MouseEventHandler afterOnCellMouseOver;
+		private MouseEventHandler afterOnCellMouseUp;
+		private MouseEventHandler afterOnCellContextMenu;
+
 		@JsConstructor
 		public SheetConfiguration() {}
 		@JsFunction

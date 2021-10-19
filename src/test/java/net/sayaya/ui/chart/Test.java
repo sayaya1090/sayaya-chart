@@ -22,11 +22,12 @@ public class Test implements EntryPoint {
 	public void onModuleLoad() {
 		LayoutTest();
 		TestSheet();
-		TestMergeCell();
+		/*TestMergeCell();
 		TestColumnNumber();
 		TestColumnDate();
 		TestColumnText();
-		TestColumnDropDown();
+		TestColumnDropDown();*/
+		TestMouseEvent();
 	}
 
 	void LayoutTest() {
@@ -124,6 +125,25 @@ public class Test implements EntryPoint {
 								.add(ListElement.singleLine().label("D"))).build())
 				.stretchH("all")
 				.build();
+		SheetElementSelectableSingle.header(sheetElement);
+		content.add(sheetElement);
+		sheetElement.values(
+				new Data("1").put("A", "FFF"),
+				new Data("2").put("A", "a"),
+				new Data("3"));
+	}
+	private void TestMouseEvent() {
+		SheetElement sheetElement = SheetElement.builder()
+												.columns(
+														ColumnBuilder.string("A").name("A").pattern("^a$").than("red", "yellow").color("blue").build(),
+														ColumnBuilder.string("B").build(),
+														ColumnBuilder.checkbox("C").build()
+												).mergeCells(new MergeCell[]{new MergeCell().col(1).row(0).colspan(2).rowspan(3)})
+												.stretchH("all").afterOnCellContextMenu((evt, coords, td)->{
+					DomGlobal.console.log(evt.button + ", " + coords.row() + ", " + coords.col() + ", " + td);
+				}).afterOnCellMouseDown((evt, coords, td)->{
+					DomGlobal.console.log(evt.button + ", " + coords.row() + ", " + coords.col() + ", " + td);
+				}).build();
 		SheetElementSelectableSingle.header(sheetElement);
 		content.add(sheetElement);
 		sheetElement.values(
