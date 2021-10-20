@@ -50,6 +50,11 @@ public class SheetElement extends HTMLElementBuilder<HTMLDivElement, SheetElemen
 		Scheduler.get().scheduleDeferred(()->table.updateSettings(configuration));
 		return that();
 	}
+	public SheetElement prepend(Data data) {
+		configuration.prepend(data);
+		Scheduler.get().scheduleDeferred(()->table.updateSettings(configuration));
+		return that();
+	}
 	public SheetElement delete(String id) {
 		configuration.delete(id);
 		Scheduler.get().scheduleDeferred(()->table.updateSettings(configuration));
@@ -191,6 +196,12 @@ public class SheetElement extends HTMLElementBuilder<HTMLDivElement, SheetElemen
 		public SheetConfiguration append(Data item) {
 			if(data == null) data = new Data[] {};
 			JsArray.asJsArray(data).push(item);
+			return this;
+		}
+		@JsOverlay
+		public SheetConfiguration prepend(Data item) {
+			if(data == null) data = new Data[] {};
+			JsArray.asJsArray(data).unshift(item);
 			return this;
 		}
 		@JsOverlay
