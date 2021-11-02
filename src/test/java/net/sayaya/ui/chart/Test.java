@@ -49,23 +49,13 @@ public class Test implements EntryPoint {
 						ColumnBuilder.checkbox("C").isTrue().than("red", "yellow").isFalse().than("blue", "green").build())
 				.stretchH("all")
 				.build();
-		SheetElementSelectableMulti wrapper = new SheetElementSelectableMulti() {
-			@Override
-			public HandlerRegistration onSelectionChange(SelectionChangeEventListener<Data[]> listener) {
-				EventListener wrapper = evt->listener.handle(SelectionChangeEvent.event(evt, selection()));
-				return bind(sheetElement.element(), "selection-change", wrapper);
-			}
-			@Override
-			public Data[] value() {
-				return sheetElement.values();
-			}
-		};
-		SheetElementSelectableMulti.header(sheetElement);
 		content.add(sheetElement);
 		sheetElement.values(
 				new Data("1").put("A", "FFF"),
 				new Data("2").put("A", "a"),
 				new Data("3"));
+
+		SheetElementSelectableMulti wrapper = SheetElementSelectableMulti.wrap(sheetElement);
 		wrapper.onSelectionChange(evt->{
 		//	DomGlobal.alert(evt.selection()[0]);
 		});
