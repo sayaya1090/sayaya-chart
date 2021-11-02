@@ -9,12 +9,17 @@ import net.sayaya.ui.IconElement;
 import net.sayaya.ui.ListElement;
 import net.sayaya.ui.TopBarElement;
 import net.sayaya.ui.chart.column.ColumnBuilder;
+import net.sayaya.ui.event.HasSelectionChangeHandlers;
+import org.gwtproject.event.shared.HandlerRegistration;
 import org.jboss.elemento.Elements;
 import org.jboss.elemento.HtmlContentBuilder;
 
+import java.util.Arrays;
 import java.util.Date;
+import java.util.Optional;
 
 import static org.jboss.elemento.Elements.*;
+import static org.jboss.elemento.EventType.bind;
 
 public class Test implements EntryPoint {
 	private final HtmlContentBuilder<HTMLDivElement> content = div();
@@ -44,12 +49,26 @@ public class Test implements EntryPoint {
 						ColumnBuilder.checkbox("C").isTrue().than("red", "yellow").isFalse().than("blue", "green").build())
 				.stretchH("all")
 				.build();
-		SheetElementSelectableSingle.header(sheetElement);
+		SheetElementSelectableMulti wrapper = new SheetElementSelectableMulti() {
+			@Override
+			public HandlerRegistration onSelectionChange(SelectionChangeEventListener<Data[]> listener) {
+				EventListener wrapper = evt->listener.handle(SelectionChangeEvent.event(evt, selection()));
+				return bind(sheetElement.element(), "selection-change", wrapper);
+			}
+			@Override
+			public Data[] value() {
+				return sheetElement.values();
+			}
+		};
+		SheetElementSelectableMulti.header(sheetElement);
 		content.add(sheetElement);
 		sheetElement.values(
 				new Data("1").put("A", "FFF"),
 				new Data("2").put("A", "a"),
 				new Data("3"));
+		wrapper.onSelectionChange(evt->{
+		//	DomGlobal.alert(evt.selection()[0]);
+		});
 	}
 
 	private void TestMergeCell() {
