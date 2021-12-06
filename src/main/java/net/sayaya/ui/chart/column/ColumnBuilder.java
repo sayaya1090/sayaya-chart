@@ -2,6 +2,9 @@ package net.sayaya.ui.chart.column;
 
 import net.sayaya.ui.ListElement;
 import net.sayaya.ui.chart.Column;
+import net.sayaya.ui.chart.Data;
+
+import java.util.function.Function;
 
 @FunctionalInterface
 public interface ColumnBuilder {
@@ -10,6 +13,9 @@ public interface ColumnBuilder {
 	static ColumnString string(String id) { return new ColumnString(id); }
 	static ColumnText text(String id, int minHeight, int maxHeight) {
 		return new ColumnText(id, minHeight, maxHeight);
+	}
+	static ColumnLink link(String id, Function<Data, String> url) {
+		return new ColumnLink(id, url);
 	}
 	static ColumnNumber number(String id) { return new ColumnNumber(id); }
 	static ColumnDate date(String id) { return new ColumnDate(id); }

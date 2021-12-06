@@ -17,6 +17,7 @@ import org.jboss.elemento.HtmlContentBuilder;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Optional;
+import java.util.function.Function;
 
 import static org.jboss.elemento.Elements.*;
 import static org.jboss.elemento.EventType.bind;
@@ -27,11 +28,12 @@ public class Test implements EntryPoint {
 	public void onModuleLoad() {
 		LayoutTest();
 		TestSheet();
-		/*TestMergeCell();
+		TestMergeCell();
 		TestColumnNumber();
 		TestColumnDate();
 		TestColumnText();
-		TestColumnDropDown();*/
+		TestColumnLink();
+		TestColumnDropDown();
 		TestMouseEvent();
 	}
 
@@ -119,6 +121,22 @@ public class Test implements EntryPoint {
 		content.add(sheetElement);
 		sheetElement.values(
 				new Data("1").put("A", "FFF"),
+				new Data("2").put("A", "a"),
+				new Data("3"));
+	}
+	private void TestColumnLink() {
+		Function<Data, String> m = data->"https://google.co.kr";
+		SheetElement sheetElement = SheetElement.builder()
+				.columns(
+						ColumnBuilder.string("A").name("A").pattern("^a$").than("red","yellow").color("blue").build(),
+						ColumnBuilder.link("B", m).target("self").pattern("^a").than("red", "yellow").build(),
+						ColumnBuilder.checkbox("C").build())
+				.stretchH("all")
+				.build();
+		SheetElementSelectableSingle.header(sheetElement);
+		content.add(sheetElement);
+		sheetElement.values(
+				new Data("1").put("A", "FFF").put("B", "GOOGLE"),
 				new Data("2").put("A", "a"),
 				new Data("3"));
 	}
