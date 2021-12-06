@@ -8,6 +8,10 @@ import net.sayaya.ui.chart.Column;
 import net.sayaya.ui.chart.Data;
 import net.sayaya.ui.chart.function.CellEditor;
 import net.sayaya.ui.chart.function.CellEditorFactory;
+import net.sayaya.ui.chart.function.Consumer;
+import org.jboss.elemento.EventCallbackFn;
+import org.jboss.elemento.EventType;
+import org.jboss.elemento.HtmlContentBuilder;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -20,6 +24,7 @@ public final class ColumnLink implements ColumnBuilder {
 	private final String id;
 	private final Function<Data, String> mapper;
 	private String target;
+	private Consumer<Data> callbackFn;
 	@Delegate(excludes = ColumnBuilder.class) private final ColumnBuilderDefaultHelper<ColumnLink> defaultHelper = new ColumnBuilderDefaultHelper<>(()->this);
 	@Delegate(excludes = ColumnStyleHelper.class) private final ColumnStyleTextHelper<ColumnLink> textHelper = new ColumnStyleTextHelper<>(()->this);
 	private final ColumnStyleDataChangeHelper<ColumnLink> dataChangeHelper = new ColumnStyleDataChangeHelper<>(()->this);
@@ -28,6 +33,10 @@ public final class ColumnLink implements ColumnBuilder {
 	@Delegate(excludes = ColumnStyleHelper.class) private final ColumnStyleAlignHelper<ColumnLink> alignHelper = new ColumnStyleAlignHelper<>(()->this);
 	public ColumnLink target(String target) {
 		this.target = target;
+		return this;
+	}
+	public ColumnLink onClick(Consumer<Data> callbackFn) {
+		this.callbackFn = callbackFn;
 		return this;
 	}
 	@Override
@@ -48,8 +57,13 @@ public final class ColumnLink implements ColumnBuilder {
 			td.innerHTML = "";
 			if(value!=null && !value.trim().isEmpty()) {
 				String url = mapper.apply(data);
-				HTMLAnchorElement a = a(url, target != null ? target : "_blank").add(value).element();
-				td.appendChild(a);
+				HtmlContentBuilder<HTMLAnchorElement> a = a(url, target != null ? target : "_blank").add(value);
+				if(callbackFn!=null) a.on(EventType.click, evt->{
+					evt.stopPropagation();
+					evt.preventDefault();
+					callbackFn.accept(data);
+				});
+				td.appendChild(a.element());
 			}
 			return td;
 		}).editor(this::textFieldEditor)
