@@ -40,7 +40,7 @@ public interface SheetElementSelectableMulti extends HasSelectionChangeHandlers<
 			ColumnHeaderRenderer defaultRenderer = renderers[0];
 			ColumnHeaderRenderer proxy = (row, TH) -> {
 				if (row == -1) {
-					TH.innerHTML = "<input class='select-all-header-checkbox' type='checkbox' style='vertical-align: middle; margin: 0px;'/>";
+					TH.innerHTML = "<div class='relative'><input class='select-all-header-checkbox' type='checkbox' style='vertical-align: middle; margin: 0px;'/></div>";
 				} else defaultRenderer.accept(row, TH);
 				return TH;
 			};

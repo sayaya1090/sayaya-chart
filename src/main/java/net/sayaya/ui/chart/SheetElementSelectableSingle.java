@@ -29,9 +29,9 @@ public interface SheetElementSelectableSingle extends HasSelectionChangeHandlers
 				boolean checked = data[row].state() == Data.DataState.SELECTED;
 				TH.classList.add("row-header-checkbox");
 				TH.style.cursor = "pointer";
-				TH.innerHTML = "<input name='" + id + "' " +
+				TH.innerHTML = "<div class='relative'><input name='" + id + "' " +
 						"idx='" + data[row].idx() + "' " + (checked?"checked ":"") +
-						"type='radio' style='vertical-align: middle; margin: 0px; height: 100%;'/>";
+						"type='radio' style='vertical-align: middle; margin: 0px; height: 100%;'/></div>";
 			});
 		}).rowHeaderWidth(30);
 		sheetElement.element().addEventListener("click", evt->{
