@@ -31,7 +31,7 @@ public interface SheetElementSelectableSingle extends HasSelectionChangeHandlers
 				TH.style.cursor = "pointer";
 				TH.innerHTML = "<div class='relative'><input name='" + id + "' " +
 						"idx='" + data[row].idx() + "' " + (checked?"checked ":"") +
-						"type='radio' style='vertical-align: middle; margin: 0px; height: 100%;'/></div>";
+						"type='radio' style='vertical-align: middle; margin: 0px; '/></div>";
 			});
 		}).rowHeaderWidth(30);
 		sheetElement.element().addEventListener("click", evt->{
