@@ -19,6 +19,22 @@ public interface SheetElementSelectableSingle extends HasSelectionChangeHandlers
 				.filter(d->d.state()==Data.DataState.SELECTED)
 				.findAny();
 	}
+	static SheetElementSelectableSingle wrap(SheetElement sheetElement) {
+		SheetElementSelectableSingle wrapper = new SheetElementSelectableSingle() {
+			@Override
+			public HandlerRegistration onSelectionChange(SelectionChangeEventListener<Optional<Data>> listener) {
+				EventListener wrapper = evt->listener.handle(SelectionChangeEvent.event(evt, selection()));
+				return bind(sheetElement.element(), "selection-change", wrapper);
+			}
+			@Override
+			public Data[] value() {
+				return sheetElement.values();
+			}
+		};
+		SheetElementSelectableSingle.header(sheetElement);
+		return wrapper;
+	}
+
 	static void header(SheetElement sheetElement) {
 		SheetElement.SheetConfiguration config = sheetElement.configuration();
 		config.afterGetRowHeaderRenderers(renderers->{
