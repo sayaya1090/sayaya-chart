@@ -53,6 +53,7 @@ public interface SheetElementSelectableSingle extends HasSelectionChangeHandlers
 		sheetElement.element().addEventListener("click", evt->{
 			HTMLElement target = (HTMLElement) evt.target;
 			if(target.classList.contains("row-header-checkbox")) {
+				evt.stopPropagation();
 				HTMLTableCellElement th = (HTMLTableCellElement)target;
 				HTMLInputElement radio = (HTMLInputElement) th.firstElementChild;
 				radio.checked = true;
@@ -61,6 +62,7 @@ public interface SheetElementSelectableSingle extends HasSelectionChangeHandlers
 				Arrays.stream(config.data()).filter(d->idx.equals(d.idx())).findAny().get().select(true);
 				sheetElement.element().dispatchEvent(new CustomEvent("selection-change"));
 			} else if(target.parentElement!=null && target.parentElement.classList.contains("row-header-checkbox")) {
+				evt.stopPropagation();
 				HTMLInputElement radio = (HTMLInputElement) target;
 				radio.checked = true;
 				String idx = radio.getAttribute("idx");
