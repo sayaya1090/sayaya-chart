@@ -1,26 +1,20 @@
 package net.sayaya.ui.chart;
 
-import com.google.gwt.core.client.*;
+import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
-import elemental2.dom.*;
-import net.sayaya.ui.DrawerElement;
-import net.sayaya.ui.IconElement;
+import elemental2.dom.DomGlobal;
+import elemental2.dom.HTMLDivElement;
 import net.sayaya.ui.ListElement;
 import net.sayaya.ui.TopBarElement;
 import net.sayaya.ui.chart.column.ColumnBuilder;
-import net.sayaya.ui.event.HasSelectionChangeHandlers;
-import org.gwtproject.event.shared.HandlerRegistration;
 import org.jboss.elemento.Elements;
 import org.jboss.elemento.HtmlContentBuilder;
 
-import java.util.Arrays;
 import java.util.Date;
-import java.util.Optional;
 import java.util.function.Function;
 
-import static org.jboss.elemento.Elements.*;
-import static org.jboss.elemento.EventType.bind;
+import static org.jboss.elemento.Elements.div;
 
 public class Test implements EntryPoint {
 	private final HtmlContentBuilder<HTMLDivElement> content = div();

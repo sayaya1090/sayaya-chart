@@ -1,5 +1,6 @@
 package net.sayaya.ui.chart.column;
 
+import com.google.web.bindery.event.shared.HandlerRegistration;
 import elemental2.core.JsRegExp;
 import elemental2.core.RegExpResult;
 import elemental2.dom.*;
@@ -9,10 +10,9 @@ import jsinterop.annotations.JsProperty;
 import jsinterop.annotations.JsType;
 import lombok.experimental.Delegate;
 import net.sayaya.ui.HTMLElementBuilder;
-import net.sayaya.ui.event.HasValueChangeHandlers;
 import net.sayaya.ui.chart.Column;
 import net.sayaya.ui.chart.Data;
-import org.gwtproject.event.shared.HandlerRegistration;
+import net.sayaya.ui.event.HasValueChangeHandlers;
 import org.jboss.elemento.Elements;
 import org.jboss.elemento.HtmlContentBuilder;
 import org.jboss.elemento.InputType;

@@ -1,15 +1,13 @@
 package net.sayaya.ui.chart;
 
 import com.google.gwt.user.client.Random;
+import com.google.web.bindery.event.shared.HandlerRegistration;
 import elemental2.core.JsArray;
 import elemental2.dom.*;
-import net.sayaya.ui.chart.function.BiConsumer;
 import net.sayaya.ui.chart.function.ColumnHeaderRenderer;
 import net.sayaya.ui.event.HasSelectionChangeHandlers;
-import org.gwtproject.event.shared.HandlerRegistration;
 
 import java.util.Arrays;
-import java.util.Optional;
 
 import static org.jboss.elemento.EventType.bind;
 

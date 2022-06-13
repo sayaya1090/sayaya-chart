@@ -1,5 +1,5 @@
 plugins {
-    id "org.wisepersist.gwt" version "1.1.14"
+    id "org.wisepersist.gwt" version "1.1.18"
 }
 apply plugin: "java"
 apply plugin: "maven-publish"
@@ -10,10 +10,20 @@ if(project.gradle.startParameter.taskNames.contains("gwtDev")) {
     sourceSets.main.java.srcDirs += 'src/test/java'
 } else {
     apply plugin: "gwt-base"
+    publishing {
+        publications {
+            maven(MavenPublication) {
+                groupId = "net.sayaya"
+                artifactId = "chart"
+                version = "2.0"
+                from components.java
+            }
+        }
+    }
 }
 
 group "net.sayaya"
-version "1.0"
+version "2.0"
 [compileJava, compileTestJava]*.options*.encoding = "UTF-8"
 
 repositories {
@@ -21,30 +31,25 @@ repositories {
     mavenCentral()
 }
 dependencies {
-    implementation("net.sayaya:ui:3.1")
-    implementation("org.jboss.elemento:elemento-core:1.0.3")
-    implementation("com.google.elemental2:elemental2-svg:1.1.0")
-    implementation("com.google.gwt:gwt-user:2.9.0")
-    implementation("com.google.gwt:gwt-dev:2.9.0")
-    implementation("org.projectlombok:lombok:1.18.20")
-    annotationProcessor("org.projectlombok:lombok:1.18.20")
-}
-gwt {
-    gwtVersion = "2.9.0"
-    minHeapSize = "1024M"
-    maxHeapSize = "2048M"
-    jsInteropExports.setGenerate(true)
-    compiler {
-        localWorkers = 12
-        disableClassMetadata = true
-        disableCastChecking = true
+    implementation("net.sayaya:ui:4.0")
+    implementation('org.jboss.elemento:elemento-core:1.0.10-gwtcom') {
+        exclude group:"com.google.gwt", module:"gwt-user"
     }
+    implementation("com.google.elemental2:elemental2-svg:1.1.0")
+    compileOnly("org.gwtproject:gwt-dev:2.10.0")
+    implementation("org.gwtproject:gwt-user:2.10.0")
+    implementation("org.projectlombok:lombok:1.18.24")
+    annotationProcessor("org.projectlombok:lombok:1.18.24")
 }
 ext {
     lombok = project.configurations.annotationProcessor.find { it.name.startsWith("lombok") }
 }
 if(project.gradle.startParameter.taskNames.contains("gwtDev")) {
+    war.duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     gwtDev {
+        sourceLevel = "auto"
+        minHeapSize = "4096M"
+        maxHeapSize = "4096M"
         jvmArgs "-XX:ReservedCodeCacheSize=512M","-javaagent:${lombok}=ECJ"
         port 8888
         war file("src/test/webapp")
@@ -56,17 +61,9 @@ if(project.gradle.startParameter.taskNames.contains("gwtDev")) {
     }
 }
 compileGwt {
-    minHeapSize = "2048M"
+    gwtVersion = "2.10.0"
+    sourceLevel = "auto"
+    minHeapSize = "4096M"
     maxHeapSize = "4096M"
-    jvmArgs "-XX:ReservedCodeCacheSize=512M","-Xss2M","-javaagent:${lombok}=ECJ","-generateJsInteropExport"
-}
-publishing {
-    publications {
-        maven(MavenPublication) {
-            groupId = "net.sayaya"
-            artifactId = "chart"
-            version = "1.0"
-            from components.java
-        }
-    }
+    jvmArgs "-XX:ReservedCodeCacheSize=512M","-Xss2M","-javaagent:${lombok}=ECJ"
 }

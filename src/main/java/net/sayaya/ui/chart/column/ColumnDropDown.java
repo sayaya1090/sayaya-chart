@@ -1,24 +1,23 @@
 package net.sayaya.ui.chart.column;
 
+import com.google.web.bindery.event.shared.HandlerRegistration;
 import elemental2.dom.*;
 import elemental2.svg.SVGElement;
 import elemental2.svg.SVGPolygonElement;
 import jsinterop.annotations.JsPackage;
-import jsinterop.annotations.JsProperty;
 import jsinterop.annotations.JsType;
 import lombok.experimental.Delegate;
-import net.sayaya.ui.DropDownElement;
 import net.sayaya.ui.HTMLElementBuilder;
 import net.sayaya.ui.ListElement;
 import net.sayaya.ui.chart.Column;
 import net.sayaya.ui.event.HasValueChangeHandlers;
-import org.gwtproject.event.shared.HandlerRegistration;
 import org.jboss.elemento.HtmlContentBuilder;
 
 import java.util.LinkedList;
 import java.util.List;
 
-import static org.jboss.elemento.Elements.*;
+import static org.jboss.elemento.Elements.div;
+import static org.jboss.elemento.Elements.span;
 import static org.jboss.elemento.EventType.bind;
 
 public final class ColumnDropDown implements ColumnBuilder {
