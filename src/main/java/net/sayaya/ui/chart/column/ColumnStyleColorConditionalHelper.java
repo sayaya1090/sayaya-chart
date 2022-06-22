@@ -1,7 +1,6 @@
 package net.sayaya.ui.chart.column;
 
 import com.google.gwt.regexp.shared.RegExp;
-import elemental2.dom.DomGlobal;
 import elemental2.dom.HTMLElement;
 
 import java.util.function.Supplier;
@@ -18,7 +17,6 @@ public final class ColumnStyleColorConditionalHelper<SELF> implements ColumnStyl
 	@Override
 	public HTMLElement apply(HTMLElement td, int row, String prop, String value) {
 		if(value == null) return td;
-		DomGlobal.console.log(value);
 		if(pattern.test(value.trim())) {
 			if(color !=null)             td.style.color              = color.apply(td, row, prop, value);
 			if(colorBackground !=null)   td.style.backgroundColor    = colorBackground.apply(td, row, prop, value);

@@ -42,7 +42,7 @@ public final class ColumnBuilderDefaultHelper<SELF> implements ColumnBuilder {
 	}
 	public boolean readOnly() {
 		if(readOnly == null) return false;
-		return readOnly();
+		return readOnly.get();
 	}
 	@Override
 	public Column build() {
