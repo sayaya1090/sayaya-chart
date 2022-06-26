@@ -1,6 +1,5 @@
 package net.sayaya.ui.chart.column;
 
-import com.google.web.bindery.event.shared.HandlerRegistration;
 import elemental2.core.JsRegExp;
 import elemental2.core.RegExpResult;
 import elemental2.dom.*;
@@ -13,6 +12,7 @@ import net.sayaya.ui.HTMLElementBuilder;
 import net.sayaya.ui.chart.Column;
 import net.sayaya.ui.chart.Data;
 import net.sayaya.ui.event.HasValueChangeHandlers;
+import org.gwtproject.event.shared.HandlerRegistration;
 import org.jboss.elemento.Elements;
 import org.jboss.elemento.HtmlContentBuilder;
 import org.jboss.elemento.InputType;
