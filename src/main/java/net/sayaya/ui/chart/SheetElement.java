@@ -13,7 +13,6 @@ import net.sayaya.ui.HTMLElementBuilder;
 import net.sayaya.ui.chart.function.AfterGetColumnHeaderRenderers;
 import net.sayaya.ui.chart.function.AfterGetRowHeaderRenderers;
 import net.sayaya.ui.chart.function.MouseEventHandler;
-import org.jboss.elemento.EventType;
 import org.jboss.elemento.HtmlContentBuilder;
 
 import java.util.Arrays;
@@ -34,9 +33,6 @@ public class SheetElement extends HTMLElementBuilder<HTMLDivElement, SheetElemen
 		this.configuration = setting;
 		table = new Handsontable(e.element(), setting);
 		Js.asPropertyMap(table).set("spreadsheet", this);
-		e.on(EventType.mousedown, evt->{
-			evt.stopPropagation();
-		});
 	}
 	public Data[] values() {
 		Data[] data = configuration.data;
