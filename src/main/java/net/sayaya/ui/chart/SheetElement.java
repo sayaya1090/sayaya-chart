@@ -35,7 +35,7 @@ public class SheetElement extends HTMLElementBuilder<HTMLDivElement, SheetElemen
 		this.configuration = setting;
 		table = new Handsontable(e.element(), setting);
 		Js.asPropertyMap(table).set("spreadsheet", this);
-		e.on(EventType.mouseup, Event::stopImmediatePropagation);
+		e.on(EventType.mousedown, Event::stopImmediatePropagation);
 	}
 	public Data[] values() {
 		Data[] data = configuration.data;
