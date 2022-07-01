@@ -3,7 +3,6 @@ package net.sayaya.ui.chart;
 import com.google.gwt.core.client.Scheduler;
 import elemental2.core.JsArray;
 import elemental2.dom.Element;
-import elemental2.dom.Event;
 import elemental2.dom.HTMLDivElement;
 import jsinterop.annotations.*;
 import jsinterop.base.Js;
@@ -35,7 +34,9 @@ public class SheetElement extends HTMLElementBuilder<HTMLDivElement, SheetElemen
 		this.configuration = setting;
 		table = new Handsontable(e.element(), setting);
 		Js.asPropertyMap(table).set("spreadsheet", this);
-		e.on(EventType.mousedown, Event::stopImmediatePropagation);
+		e.on(EventType.mousedown, evt->{
+			evt.stopPropagation();
+		});
 	}
 	public Data[] values() {
 		Data[] data = configuration.data;
