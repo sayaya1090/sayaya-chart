@@ -2,8 +2,8 @@ package net.sayaya.ui.chart;
 
 import com.google.gwt.core.client.Scheduler;
 import elemental2.core.JsArray;
-import elemental2.core.JsNumber;
 import elemental2.dom.Element;
+import elemental2.dom.Event;
 import elemental2.dom.HTMLDivElement;
 import jsinterop.annotations.*;
 import jsinterop.base.Js;
@@ -14,6 +14,7 @@ import net.sayaya.ui.HTMLElementBuilder;
 import net.sayaya.ui.chart.function.AfterGetColumnHeaderRenderers;
 import net.sayaya.ui.chart.function.AfterGetRowHeaderRenderers;
 import net.sayaya.ui.chart.function.MouseEventHandler;
+import org.jboss.elemento.EventType;
 import org.jboss.elemento.HtmlContentBuilder;
 
 import java.util.Arrays;
@@ -34,6 +35,7 @@ public class SheetElement extends HTMLElementBuilder<HTMLDivElement, SheetElemen
 		this.configuration = setting;
 		table = new Handsontable(e.element(), setting);
 		Js.asPropertyMap(table).set("spreadsheet", this);
+		e.on(EventType.mouseup, Event::stopImmediatePropagation);
 	}
 	public Data[] values() {
 		Data[] data = configuration.data;
@@ -90,7 +92,8 @@ public class SheetElement extends HTMLElementBuilder<HTMLDivElement, SheetElemen
 	public final static class Handsontable {
 		@JsProperty(name="spreadsheet")
 		public SheetElement spreadsheet;
-		public Handsontable(Element element, SheetConfiguration setting) {};
+		@JsConstructor
+		public Handsontable(Element element, SheetConfiguration setting) {}
 		public native void render();
 		public native void updateSettings(SheetConfiguration setting);
 		public native SheetConfiguration getSettings();
