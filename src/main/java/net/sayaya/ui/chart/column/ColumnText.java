@@ -5,11 +5,8 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.Delegate;
 import net.sayaya.ui.chart.Column;
-import net.sayaya.ui.chart.SheetElement;
 import net.sayaya.ui.chart.function.CellEditor;
 import net.sayaya.ui.chart.function.CellEditorFactory;
-import org.jboss.elemento.HtmlContentBuilder;
-import org.jboss.elemento.TextContentBuilder;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -65,18 +62,19 @@ public final class ColumnText implements ColumnBuilder {
 		private final HTMLTextAreaElement elem = textarea().element();
 		@Override
 		public void prepare(int row, int col, String prop, HTMLElement td, String value, Object cell) {
-			textHelper.clear(td);
-			colorHelper.clear(td);
-			for(ColumnStyleColorConditionalHelper<ColumnText> helper: colorConditionalHelpers) helper.clear(td);
-			alignHelper.clear(td);
+			try {
+				textHelper.clear(td);
+				colorHelper.clear(td);
+				for (ColumnStyleColorConditionalHelper<ColumnText> helper : colorConditionalHelpers) helper.clear(td);
+				alignHelper.clear(td);
 
-			textHelper.apply(td, row, prop, value);
-			colorHelper.apply(td, row, prop, value);
-			for(ColumnStyleColorConditionalHelper<ColumnText> helper: colorConditionalHelpers) helper.apply(td, row, prop, value);
-			alignHelper.apply(td, row, prop, value);
-
-			//td.style.minHeight = CSSProperties.MinHeightUnionType.of(heightMin>0?heightMin:24);
-			//td.style.maxHeight = CSSProperties.MaxHeightUnionType.of(heightMax>0?heightMax:200);
+				textHelper.apply(td, row, prop, value);
+				colorHelper.apply(td, row, prop, value);
+				for (ColumnStyleColorConditionalHelper<ColumnText> helper : colorConditionalHelpers) helper.apply(td, row, prop, value);
+				alignHelper.apply(td, row, prop, value);
+			} catch(Exception e) {
+				DomGlobal.console.log(e);
+			}
 		}
 		@Override
 		public String toValue(String value) {
