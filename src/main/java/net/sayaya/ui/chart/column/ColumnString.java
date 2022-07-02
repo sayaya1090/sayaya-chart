@@ -42,6 +42,7 @@ public final class ColumnString implements ColumnBuilder {
 			for (ColumnStyleColorConditionalHelper<ColumnString> helper : colorConditionalHelpers) helper.apply(td, row, prop, value);
 			alignHelper.apply(td, row, prop, value);
 			td.innerHTML = value;
+			DomGlobal.console.log("Editor:");
 			DomGlobal.console.log(Js.asPropertyMap(this).get("editor"));
 			return td;
 		}).headerRenderer(n->span().textContent(defaultHelper.name()).element());
