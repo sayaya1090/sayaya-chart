@@ -2,7 +2,6 @@ package net.sayaya.ui.chart;
 
 import elemental2.core.Function;
 import elemental2.core.JsArray;
-import elemental2.dom.DomGlobal;
 import jsinterop.annotations.JsIgnore;
 import jsinterop.annotations.JsMethod;
 import jsinterop.annotations.JsType;
@@ -47,8 +46,7 @@ public class Data implements HasStateChangeHandlers<Data.DataState> {
 		else return null;
 	}
 	public boolean isChanged(String key) {
-		DomGlobal.console.log("Initialized:" + initialized.get(key));
-		return Js.isTripleEqual(initialized.get(key), get(key));
+		return !Js.isTripleEqual(Js.asString(initialized.get(key)).trim(), Js.asString(get(key)).trim());
 	}
 	private static String trim(String str) {
 		if(str == null) return str;
