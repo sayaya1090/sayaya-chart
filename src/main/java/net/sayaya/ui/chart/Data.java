@@ -2,12 +2,16 @@ package net.sayaya.ui.chart;
 
 import elemental2.core.Function;
 import elemental2.core.JsArray;
-import jsinterop.annotations.*;
+import elemental2.dom.DomGlobal;
+import jsinterop.annotations.JsIgnore;
+import jsinterop.annotations.JsMethod;
+import jsinterop.annotations.JsType;
 import jsinterop.base.Js;
 import jsinterop.base.JsPropertyMap;
 import net.sayaya.ui.event.HasStateChangeHandlers;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Objects;
 
 @JsType
 public class Data implements HasStateChangeHandlers<Data.DataState> {
@@ -45,6 +49,7 @@ public class Data implements HasStateChangeHandlers<Data.DataState> {
 	}
 	public boolean isChanged(String key) {
 		if(this == null) return false;					// JS 버그?
+		DomGlobal.console.log(initialized.get(key));
 		String original = trim((String) initialized.get(key));
 		String current = trim(get(key));
 		return !Objects.equals(original, current);
