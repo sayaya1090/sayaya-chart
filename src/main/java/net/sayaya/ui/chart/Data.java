@@ -27,7 +27,9 @@ public class Data implements HasStateChangeHandlers<Data.DataState> {
 	}
 	public Data put(String key, String value) {
 		Js.asPropertyMap(this).set(key, value);
+		DomGlobal.console.log(value);
 		if(!initialized.has(key)) initialized.set(key, value);
+		DomGlobal.console.log(initialized.get(key));
 		return this;
 	}
 	public Data delete(String key) {
@@ -47,11 +49,7 @@ public class Data implements HasStateChangeHandlers<Data.DataState> {
 		else return null;
 	}
 	public boolean isChanged(String key) {
-		if(this == null) return false;					// JS 버그?
-		DomGlobal.console.log(initialized);
 		DomGlobal.console.log(initialized.get(key));
-		Object value = initialized.get(key);
-		DomGlobal.console.log(value.getClass());
 		return Js.isTripleEqual(initialized.get(key), get(key));
 	}
 	private static String trim(String str) {
