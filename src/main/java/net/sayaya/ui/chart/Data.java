@@ -11,7 +11,6 @@ import jsinterop.base.JsPropertyMap;
 import net.sayaya.ui.event.HasStateChangeHandlers;
 
 import java.util.Collection;
-import java.util.Objects;
 
 @JsType
 public class Data implements HasStateChangeHandlers<Data.DataState> {
@@ -49,10 +48,11 @@ public class Data implements HasStateChangeHandlers<Data.DataState> {
 	}
 	public boolean isChanged(String key) {
 		if(this == null) return false;					// JS 버그?
+		DomGlobal.console.log(initialized);
 		DomGlobal.console.log(initialized.get(key));
-		String original = trim((String) initialized.get(key));
-		String current = trim(get(key));
-		return !Objects.equals(original, current);
+		Object value = initialized.get(key);
+		DomGlobal.console.log(value.getClass());
+		return Js.isTripleEqual(initialized.get(key), get(key));
 	}
 	private static String trim(String str) {
 		if(str == null) return str;
