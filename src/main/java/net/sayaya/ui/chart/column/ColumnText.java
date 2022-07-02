@@ -1,6 +1,9 @@
 package net.sayaya.ui.chart.column;
 
-import elemental2.dom.*;
+import elemental2.dom.Element;
+import elemental2.dom.HTMLDivElement;
+import elemental2.dom.HTMLElement;
+import elemental2.dom.HTMLTextAreaElement;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.Delegate;
@@ -62,19 +65,15 @@ public final class ColumnText implements ColumnBuilder {
 		private final HTMLTextAreaElement elem = textarea().element();
 		@Override
 		public void prepare(int row, int col, String prop, HTMLElement td, String value, Object cell) {
-			try {
-				textHelper.clear(td);
-				colorHelper.clear(td);
-				for (ColumnStyleColorConditionalHelper<ColumnText> helper : colorConditionalHelpers) helper.clear(td);
-				alignHelper.clear(td);
+			textHelper.clear(td);
+			colorHelper.clear(td);
+			for (ColumnStyleColorConditionalHelper<ColumnText> helper : colorConditionalHelpers) helper.clear(td);
+			alignHelper.clear(td);
 
-				textHelper.apply(td, row, prop, value);
-				colorHelper.apply(td, row, prop, value);
-				for (ColumnStyleColorConditionalHelper<ColumnText> helper : colorConditionalHelpers) helper.apply(td, row, prop, value);
-				alignHelper.apply(td, row, prop, value);
-			} catch(Exception e) {
-				DomGlobal.console.log(e);
-			}
+			textHelper.apply(td, row, prop, value);
+			colorHelper.apply(td, row, prop, value);
+			for (ColumnStyleColorConditionalHelper<ColumnText> helper : colorConditionalHelpers) helper.apply(td, row, prop, value);
+			alignHelper.apply(td, row, prop, value);
 		}
 		@Override
 		public String toValue(String value) {

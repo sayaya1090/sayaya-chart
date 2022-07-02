@@ -32,7 +32,6 @@ public class CellEditorFactory {
 		return new CustomEditor(prop);
 	}-*/;
 	public native static CellEditorText text(Object prop, CellEditorTextImpl proxy)/*-{
-		console.log("A")
 		var CustomEditorText = $wnd.Handsontable.editors.TextEditor.prototype.extend();
 		CustomEditorText.prototype.createElements = function() {
 			$wnd.Handsontable.editors.TextEditor.prototype.createElements.apply(this, arguments);
@@ -44,17 +43,14 @@ public class CellEditorFactory {
 			$wnd.Handsontable.dom.empty(this.TEXTAREA_PARENT);
 			this.TEXTAREA_PARENT.appendChild(this.TEXTAREA);
 		}
-		console.log("B")
 		CustomEditorText.prototype.setValue=function(value){
 			proxy.prepare(this.row, this.col, this.prop, this.TEXTAREA, value, this.cellProperties);
 		    $wnd.Handsontable.editors.TextEditor.prototype.setValue.apply(this, arguments);
 		    proxy.setValue(value);
 		}
-		console.log("C")
 		CustomEditorText.prototype.getValue=function() {
 		    return proxy.toValue($wnd.Handsontable.editors.TextEditor.prototype.getValue.apply(this, arguments));
 		}
-		console.log("D")
 		return new CustomEditorText(prop);
 	}-*/;
 	@JsType(isNative = true)
