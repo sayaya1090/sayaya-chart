@@ -37,22 +37,11 @@ public final class ColumnString implements ColumnBuilder {
 
 			textHelper.apply(td, row, prop, value);
 			colorHelper.apply(td, row, prop, value);
-			try {
-				DomGlobal.console.log(sheet);
-						DomGlobal.console.log(td);
-						DomGlobal.console.log(row);
-						DomGlobal.console.log(prop);
-				dataChangeHelper.apply(sheet, td, row, prop);
-			} catch(Exception e) {
-				DomGlobal.console.log( e);
-			}
+			dataChangeHelper.apply(sheet, td, row, prop);
 			for (ColumnStyleColorConditionalHelper<ColumnString> helper : colorConditionalHelpers) helper.apply(td, row, prop, value);
 			alignHelper.apply(td, row, prop, value);
 			td.innerHTML = value;
 			return td;
-		}).editor(props->{
-			DomGlobal.console.log("TextFieldEditor");
-			return textFieldEditor(props);
 		}).headerRenderer(n->span().textContent(defaultHelper.name()).element());
 	}
 	public ColumnStyleColorConditionalHelper<ColumnString> pattern(String pattern) {
