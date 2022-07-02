@@ -15,7 +15,7 @@ import java.util.Collection;
 @JsType
 public class Data implements HasStateChangeHandlers<Data.DataState> {
 	private final String idx;
-	private final JsPropertyMap<Object> initialized = Js.asPropertyMap(new Object());
+	private final JsPropertyMap<Object> initialized = JsPropertyMap.of();
 	private final JsArray<StateChangeEventListener<DataState>> listeners = JsArray.of();
 	private DataState state;
 	public Data(String idx) {

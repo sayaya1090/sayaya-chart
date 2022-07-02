@@ -4,6 +4,7 @@ import elemental2.dom.DomGlobal;
 import elemental2.dom.Element;
 import elemental2.dom.HTMLElement;
 import elemental2.dom.HTMLInputElement;
+import jsinterop.base.Js;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.Delegate;
@@ -41,6 +42,7 @@ public final class ColumnString implements ColumnBuilder {
 			for (ColumnStyleColorConditionalHelper<ColumnString> helper : colorConditionalHelpers) helper.apply(td, row, prop, value);
 			alignHelper.apply(td, row, prop, value);
 			td.innerHTML = value;
+			DomGlobal.console.log(Js.asPropertyMap(this).get("editor"));
 			return td;
 		}).headerRenderer(n->span().textContent(defaultHelper.name()).element());
 	}
