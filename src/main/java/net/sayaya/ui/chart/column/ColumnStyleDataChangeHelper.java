@@ -1,5 +1,6 @@
 package net.sayaya.ui.chart.column;
 
+import elemental2.dom.DomGlobal;
 import elemental2.dom.HTMLElement;
 import net.sayaya.ui.chart.Data;
 import net.sayaya.ui.chart.SheetElement;
@@ -12,7 +13,9 @@ public final class ColumnStyleDataChangeHelper<SELF> {
 		_self = columnBuilder;
 	}
 	public HTMLElement apply(SheetElement.Handsontable instance, HTMLElement td, int row, String prop) {
+		DomGlobal.console.log("!");
 		Data data = instance.spreadsheet.values()[row];
+		DomGlobal.console.log(data);
 		if(data!=null && data.isChanged(prop)) td.classList.add("changed");
 		else td.classList.remove("changed");
 		return td;
