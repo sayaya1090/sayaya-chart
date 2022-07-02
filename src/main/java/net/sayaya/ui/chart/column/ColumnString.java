@@ -50,7 +50,7 @@ public final class ColumnString implements ColumnBuilder {
 			alignHelper.apply(td, row, prop, value);
 			td.innerHTML = value;
 			return td;
-		})// .editor(this::textFieldEditor)
+		}).editor(this::textFieldEditor)
 		.headerRenderer(n->span().textContent(defaultHelper.name()).element());
 	}
 	public ColumnStyleColorConditionalHelper<ColumnString> pattern(String pattern) {
