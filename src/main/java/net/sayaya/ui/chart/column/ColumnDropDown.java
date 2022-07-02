@@ -30,7 +30,7 @@ public final class ColumnDropDown implements ColumnBuilder {
 		Column column = defaultHelper.build().data(id);
 		return column.readOnly(true).renderer((sheet, td, row, col, prop, value, ci)->{
 			Data data = sheet.spreadsheet.values()[row];
-			try {
+
 			alignHelper.clear(td);
 			colorHelper.clear(td);
 			for(ColumnStyleColorConditionalHelper<?> helper: colorConditionalHelpers) helper.clear(td);
