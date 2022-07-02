@@ -46,7 +46,7 @@ public final class ColumnString implements ColumnBuilder {
 				DomGlobal.console.log(e);
 			}
 			return td;
-		})//.editor(this::textFieldEditor)
+		}).editor(this::textFieldEditor)
 		.headerRenderer(n->span().textContent(defaultHelper.name()).element());
 	}
 	public ColumnStyleColorConditionalHelper<ColumnString> pattern(String pattern) {
@@ -72,7 +72,6 @@ public final class ColumnString implements ColumnBuilder {
 			for(ColumnStyleColorConditionalHelper<ColumnString> helper: colorConditionalHelpers) helper.apply(td, row, prop, value);
 			alignHelper.apply(td, row, prop, value);
 		}
-
 		@Override
 		public String toValue(String value) {
 			return value;
