@@ -31,16 +31,21 @@ public final class ColumnText implements ColumnBuilder {
 	public Column build() {
 		Column column = defaultHelper.build().data(id);
 		return column.renderer((sheet, td, row, col, prop, value, ci)->{
-			textHelper.clear(td);
-			colorHelper.clear(td);
-			for(ColumnStyleColorConditionalHelper<ColumnText> helper: colorConditionalHelpers) helper.clear(td);
-			alignHelper.clear(td);
+			try {
+				textHelper.clear(td);
+				colorHelper.clear(td);
+				for (ColumnStyleColorConditionalHelper<ColumnText> helper : colorConditionalHelpers) helper.clear(td);
+				alignHelper.clear(td);
 
-			textHelper.apply(td, row, prop, value);
-			colorHelper.apply(td, row, prop, value);
-			dataChangeHelper.apply(sheet, td, row, prop);
-			for(ColumnStyleColorConditionalHelper<ColumnText> helper: colorConditionalHelpers) helper.apply(td, row, prop, value);
-			alignHelper.apply(td, row, prop, value);
+				textHelper.apply(td, row, prop, value);
+				colorHelper.apply(td, row, prop, value);
+				dataChangeHelper.apply(sheet, td, row, prop);
+				for (ColumnStyleColorConditionalHelper<ColumnText> helper : colorConditionalHelpers)
+					helper.apply(td, row, prop, value);
+				alignHelper.apply(td, row, prop, value);
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
 
 			String cssHeightMin = "min-height: " + (heightMin>0?heightMin:24) + "px;";
 			String cssHeightMax = "max-height: " + (heightMax>0?heightMax:200) + "px;";
