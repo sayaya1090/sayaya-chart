@@ -31,17 +31,13 @@ public final class ColumnDropDown implements ColumnBuilder {
 		return column.readOnly(true).renderer((sheet, td, row, col, prop, value, ci)->{
 			Data data = sheet.spreadsheet.values()[row];
 			try {
-				alignHelper.clear(td);
-				colorHelper.clear(td);
-				for (ColumnStyleColorConditionalHelper<?> helper : colorConditionalHelpers) helper.clear(td);
-				alignHelper.apply(td, row, prop, value);
-				colorHelper.apply(td, row, prop, value);
-				dataChangeHelper.apply(sheet, td, row, prop);
-				for (ColumnStyleColorConditionalHelper<?> helper : colorConditionalHelpers)
-					helper.apply(td, row, prop, value);
-			} catch(Exception e) {
-				e.printStackTrace();
-			}
+			alignHelper.clear(td);
+			colorHelper.clear(td);
+			for(ColumnStyleColorConditionalHelper<?> helper: colorConditionalHelpers) helper.clear(td);
+			alignHelper.apply(td, row, prop, value);
+			colorHelper.apply(td, row, prop, value);
+			dataChangeHelper.apply(sheet, td, row, prop);
+			for(ColumnStyleColorConditionalHelper<?> helper: colorConditionalHelpers) helper.apply(td, row, prop, value);
 			ListElement<ListElement.SingleLineItem> list = ListElement.singleLineList().add(ListElement.singleLine().label(""));
 			for(var item: this.list) list.add(ListElement.singleLine().label(item.value()));
 			DropDownElement elem = DropDownElement.filled(list).select(value);

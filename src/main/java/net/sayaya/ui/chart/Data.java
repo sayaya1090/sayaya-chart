@@ -46,7 +46,7 @@ public class Data implements HasStateChangeHandlers<Data.DataState> {
 		else return null;
 	}
 	public boolean isChanged(String key) {
-		return !Js.isTripleEqual(Js.asString(initialized.get(key)).trim(), Js.asString(get(key)).trim());
+		return !Js.isTripleEqual(trim(Js.asString(initialized.get(key))), trim(Js.asString(get(key))));
 	}
 	private static String trim(String str) {
 		if(str == null) return str;
