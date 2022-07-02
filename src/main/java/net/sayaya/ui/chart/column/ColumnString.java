@@ -30,30 +30,28 @@ public final class ColumnString implements ColumnBuilder {
 	public Column build() {
 		Column column = defaultHelper.build().data(id);
 		return column.renderer((sheet, td, row, col, prop, value, ci)->{
-			try {
-				textHelper.clear(td);
-				colorHelper.clear(td);
-				for (ColumnStyleColorConditionalHelper<ColumnString> helper : colorConditionalHelpers) helper.clear(td);
-				alignHelper.clear(td);
-			} catch(Exception e) {
-				DomGlobal.console.log("1:" + e);
-			}
+			textHelper.clear(td);
+			colorHelper.clear(td);
+			for (ColumnStyleColorConditionalHelper<ColumnString> helper : colorConditionalHelpers) helper.clear(td);
+			alignHelper.clear(td);
 			try {
 				textHelper.apply(td, row, prop, value);
+			} catch(Exception e) {
+				DomGlobal.console.log("21:" + e);
+			} try {
 				colorHelper.apply(td, row, prop, value);
+			} catch(Exception e) {
+				DomGlobal.console.log("22:" + e);
+			} try {
 				dataChangeHelper.apply(sheet, td, row, prop);
 			} catch(Exception e) {
-				DomGlobal.console.log("2:" + e);
+				DomGlobal.console.log("23:" + e);
 			}
-			try {
-				for (ColumnStyleColorConditionalHelper<ColumnString> helper : colorConditionalHelpers) helper.apply(td, row, prop, value);
-				alignHelper.apply(td, row, prop, value);
-				td.innerHTML = value;
-			} catch(Exception e) {
-				DomGlobal.console.log("3:" + e);
-			}
+			for (ColumnStyleColorConditionalHelper<ColumnString> helper : colorConditionalHelpers) helper.apply(td, row, prop, value);
+			alignHelper.apply(td, row, prop, value);
+			td.innerHTML = value;
 			return td;
-		}).editor(this::textFieldEditor)
+		})// .editor(this::textFieldEditor)
 		.headerRenderer(n->span().textContent(defaultHelper.name()).element());
 	}
 	public ColumnStyleColorConditionalHelper<ColumnString> pattern(String pattern) {
