@@ -34,15 +34,14 @@ public final class ColumnString implements ColumnBuilder {
 			colorHelper.clear(td);
 			for (ColumnStyleColorConditionalHelper<ColumnString> helper : colorConditionalHelpers) helper.clear(td);
 			alignHelper.clear(td);
+
+			textHelper.apply(td, row, prop, value);
+			colorHelper.apply(td, row, prop, value);
 			try {
-				textHelper.apply(td, row, prop, value);
-			} catch(Exception e) {
-				DomGlobal.console.log("21:" + e);
-			} try {
-				colorHelper.apply(td, row, prop, value);
-			} catch(Exception e) {
-				DomGlobal.console.log("22:" + e);
-			} try {
+				DomGlobal.console.log(sheet);
+						DomGlobal.console.log(td);
+						DomGlobal.console.log(row);
+						DomGlobal.console.log(prop);
 				dataChangeHelper.apply(sheet, td, row, prop);
 			} catch(Exception e) {
 				DomGlobal.console.log("23:" + e);
@@ -67,15 +66,20 @@ public final class ColumnString implements ColumnBuilder {
 		private final HTMLInputElement elem = input("text").element();
 		@Override
 		public void prepare(int row, int col, String prop, HTMLElement td, String value, Object cell) {
-			textHelper.clear(td);
-			colorHelper.clear(td);
-			for(ColumnStyleColorConditionalHelper<ColumnString> helper: colorConditionalHelpers) helper.clear(td);
-			alignHelper.clear(td);
+			try {
+				textHelper.clear(td);
+				colorHelper.clear(td);
+				for (ColumnStyleColorConditionalHelper<ColumnString> helper : colorConditionalHelpers) helper.clear(td);
+				alignHelper.clear(td);
 
-			textHelper.apply(td, row, prop, value);
-			colorHelper.apply(td, row, prop, value);
-			for(ColumnStyleColorConditionalHelper<ColumnString> helper: colorConditionalHelpers) helper.apply(td, row, prop, value);
-			alignHelper.apply(td, row, prop, value);
+				textHelper.apply(td, row, prop, value);
+				colorHelper.apply(td, row, prop, value);
+				for (ColumnStyleColorConditionalHelper<ColumnString> helper : colorConditionalHelpers)
+					helper.apply(td, row, prop, value);
+				alignHelper.apply(td, row, prop, value);
+			} catch(Exception e) {
+				DomGlobal.console.log(e);
+			}
 		}
 		@Override
 		public String toValue(String value) {
