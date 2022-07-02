@@ -13,11 +13,12 @@ public final class ColumnStyleDataChangeHelper<SELF> {
 		_self = columnBuilder;
 	}
 	public HTMLElement apply(SheetElement.Handsontable instance, HTMLElement td, int row, String prop) {
-		DomGlobal.console.log("!");
+		DomGlobal.console.log("1" + td);
 		Data data = instance.spreadsheet.values()[row];
 		DomGlobal.console.log(data);
 		if(data!=null && data.isChanged(prop)) td.classList.add("changed");
 		else td.classList.remove("changed");
+		DomGlobal.console.log("2");
 		return td;
 	}
 	private SELF that() {

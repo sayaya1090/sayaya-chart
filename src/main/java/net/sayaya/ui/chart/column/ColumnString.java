@@ -50,8 +50,10 @@ public final class ColumnString implements ColumnBuilder {
 			alignHelper.apply(td, row, prop, value);
 			td.innerHTML = value;
 			return td;
-		}).editor(props->textFieldEditor(props))
-		.headerRenderer(n->span().textContent(defaultHelper.name()).element());
+		}).editor(props->{
+			DomGlobal.console.log("TextFieldEditor");
+			return textFieldEditor(props);
+		}).headerRenderer(n->span().textContent(defaultHelper.name()).element());
 	}
 	public ColumnStyleColorConditionalHelper<ColumnString> pattern(String pattern) {
 		ColumnStyleColorConditionalHelper<ColumnString> helper = new ColumnStyleColorConditionalHelper<>(pattern, ()->this);
@@ -59,6 +61,7 @@ public final class ColumnString implements ColumnBuilder {
 		return helper;
 	}
 	private CellEditor textFieldEditor(Object props) {
+		DomGlobal.console.log(props);
 		TextEditorImpl impl = new TextEditorImpl();
 		return CellEditorFactory.text(props, impl);
 	}
