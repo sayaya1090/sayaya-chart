@@ -35,15 +35,22 @@ public final class ColumnString implements ColumnBuilder {
 				colorHelper.clear(td);
 				for (ColumnStyleColorConditionalHelper<ColumnString> helper : colorConditionalHelpers) helper.clear(td);
 				alignHelper.clear(td);
-
+			} catch(Exception e) {
+				DomGlobal.console.log("1:" + e);
+			}
+			try {
 				textHelper.apply(td, row, prop, value);
 				colorHelper.apply(td, row, prop, value);
 				dataChangeHelper.apply(sheet, td, row, prop);
+			} catch(Exception e) {
+				DomGlobal.console.log("2:" + e);
+			}
+			try {
 				for (ColumnStyleColorConditionalHelper<ColumnString> helper : colorConditionalHelpers) helper.apply(td, row, prop, value);
 				alignHelper.apply(td, row, prop, value);
 				td.innerHTML = value;
 			} catch(Exception e) {
-				DomGlobal.console.log(e);
+				DomGlobal.console.log("3:" + e);
 			}
 			return td;
 		}).editor(this::textFieldEditor)
