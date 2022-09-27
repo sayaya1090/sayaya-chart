@@ -2,20 +2,24 @@ package net.sayaya.ui.chart;
 
 import elemental2.core.Function;
 import elemental2.core.JsArray;
+import elemental2.dom.CustomEvent;
 import jsinterop.annotations.JsIgnore;
 import jsinterop.annotations.JsMethod;
 import jsinterop.annotations.JsType;
 import jsinterop.base.Js;
 import jsinterop.base.JsPropertyMap;
 import net.sayaya.ui.event.HasStateChangeHandlers;
+import net.sayaya.ui.event.HasValueChangeHandlers;
+import org.gwtproject.event.shared.HandlerRegistration;
 
 import java.util.Collection;
 
 @JsType
-public class Data implements HasStateChangeHandlers<Data.DataState> {
+public class Data implements HasStateChangeHandlers<Data.DataState>, HasValueChangeHandlers<Data> {
 	private final String idx;
 	private final JsPropertyMap<Object> initialized = JsPropertyMap.of();
-	private final JsArray<StateChangeEventListener<DataState>> listeners = JsArray.of();
+	private final JsArray<StateChangeEventListener<DataState>> stateChangeListeners = JsArray.of();
+	private final JsArray<ValueChangeEventListener<Data>> valueChangeListeners = JsArray.of();
 	private DataState state;
 	public Data(String idx) {
 		this.idx = idx;
@@ -27,6 +31,7 @@ public class Data implements HasStateChangeHandlers<Data.DataState> {
 	public Data put(String key, String value) {
 		Js.asPropertyMap(this).set(key, value);
 		if(!initialized.has(key)) initialized.set(key, value);
+		fireValueChangeEvent();
 		return this;
 	}
 	public Data delete(String key) {
@@ -56,7 +61,7 @@ public class Data implements HasStateChangeHandlers<Data.DataState> {
 	}
 	@Override
 	public Collection<StateChangeEventListener<DataState>> listeners() {
-		return listeners.asList();
+		return stateChangeListeners.asList();
 	}
 	@Override
 	@JsIgnore
@@ -68,11 +73,25 @@ public class Data implements HasStateChangeHandlers<Data.DataState> {
 		fireStateChangeEvent();
 		return this;
 	}
-
+	@Override
+	public Data value() {
+		return this;
+	}
+	@Override
+	public HandlerRegistration onValueChange(ValueChangeEventListener<Data> listener) {
+		valueChangeListeners.asList().add(listener);
+		return () -> valueChangeListeners.asList().remove(listener);
+	}
+	private void fireValueChangeEvent() {
+		var evt = ValueChangeEvent.event(new CustomEvent<>("change"), this);
+		for (ValueChangeEventListener<Data> listener : valueChangeListeners.asList()) {
+			if (listener == null) break;
+			listener.handle(evt);
+		}
+	}
 	public enum DataState {
 		UNSELECTED, SELECTED
 	}
-
 	private native Data proxy(Data origin, Function callback) /*-{
 		var proxy = new Proxy(origin, {
 			set: function(target, key, value, receiver) {

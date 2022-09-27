@@ -139,11 +139,11 @@ public class Test implements EntryPoint {
 				.columns(
 						ColumnBuilder.string("A").name("A").pattern("^a$").than("red","yellow").color("blue").build(),
 						ColumnBuilder.text("B", 30, 100).horizontal("right").pattern("^a").than("red", "yellow").build(),
-						ColumnBuilder.dropdown("C", ListElement.singleLineList()
-								.add(ListElement.singleLine().label("A"))
-								.add(ListElement.singleLine().label("B"))
-								.add(ListElement.singleLine().label("C"))
-								.add(ListElement.singleLine().label("D"))).build())
+						ColumnBuilder.dropdown("C",
+								ListElement.singleLine().label("A"),
+								ListElement.singleLine().label("B"),
+								ListElement.singleLine().label("C"),
+								ListElement.singleLine().label("D")).build())
 				.stretchH("all")
 				.build();
 		SheetElementSelectableSingle.header(sheetElement);
