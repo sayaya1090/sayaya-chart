@@ -1,6 +1,5 @@
 package net.sayaya.ui.chart;
 
-import elemental2.core.Function;
 import elemental2.core.JsArray;
 import elemental2.dom.CustomEvent;
 import jsinterop.annotations.JsIgnore;
@@ -8,6 +7,7 @@ import jsinterop.annotations.JsMethod;
 import jsinterop.annotations.JsType;
 import jsinterop.base.Js;
 import jsinterop.base.JsPropertyMap;
+import net.sayaya.ui.chart.function.Consumer;
 import net.sayaya.ui.event.HasStateChangeHandlers;
 import net.sayaya.ui.event.HasValueChangeHandlers;
 import org.gwtproject.event.shared.HandlerRegistration;
@@ -16,6 +16,9 @@ import java.util.Collection;
 
 @JsType
 public class Data implements HasStateChangeHandlers<Data.DataState>, HasValueChangeHandlers<Data> {
+	public Data create(String idx) {
+		return proxy(new Data(idx), Data::fireValueChangeEvent);
+	}
 	private final String idx;
 	private final JsPropertyMap<Object> initialized = JsPropertyMap.of();
 	private final JsArray<StateChangeEventListener<DataState>> stateChangeListeners = JsArray.of();
@@ -31,7 +34,7 @@ public class Data implements HasStateChangeHandlers<Data.DataState>, HasValueCha
 	public Data put(String key, String value) {
 		Js.asPropertyMap(this).set(key, value);
 		if(!initialized.has(key)) initialized.set(key, value);
-		fireValueChangeEvent();
+
 		return this;
 	}
 	public Data delete(String key) {
@@ -79,8 +82,8 @@ public class Data implements HasStateChangeHandlers<Data.DataState>, HasValueCha
 	}
 	@Override
 	public HandlerRegistration onValueChange(ValueChangeEventListener<Data> listener) {
-		valueChangeListeners.asList().add(listener);
-		return () -> valueChangeListeners.asList().remove(listener);
+		valueChangeListeners.push(listener);
+		return () -> valueChangeListeners.delete(valueChangeListeners.asList().indexOf(listener));
 	}
 	private void fireValueChangeEvent() {
 		var evt = ValueChangeEvent.event(new CustomEvent<>("change"), this);
@@ -92,11 +95,11 @@ public class Data implements HasStateChangeHandlers<Data.DataState>, HasValueCha
 	public enum DataState {
 		UNSELECTED, SELECTED
 	}
-	private native Data proxy(Data origin, Function callback) /*-{
+	private native Data proxy(Data origin, Consumer<Data> consumer) /*-{
 		var proxy = new Proxy(origin, {
 			set: function(target, key, value, receiver) {
 				var result = Reflect.set(target, key, value, receiver);
-				callback(key, value);
+				consumer.accept(target);
 				return result;
 			}
 		});
