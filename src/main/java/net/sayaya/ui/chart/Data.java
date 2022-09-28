@@ -101,6 +101,9 @@ public class Data implements HasStateChangeHandlers<Data.DataState>, HasValueCha
 	private native static Data proxy(Data origin, ChangeHandler consumer) /*-{
 		var proxy = new Proxy(origin, {
 			set: function(target, key, value, receiver) {
+				console.log("Previous: " + target[key]);
+				console.log("Next: " + value);
+				console.log("Equality: " + (target[key]==value));
 				if(target[key]==value) return true;
 				var result = Reflect.set(target, key, value, receiver);
 				consumer.@net.sayaya.ui.chart.Data.ChangeHandler::onInvoke(Lnet/sayaya/ui/chart/Data;)(target);
