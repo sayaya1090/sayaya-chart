@@ -47,10 +47,9 @@ public class Test implements EntryPoint {
 				.build();
 		content.add(sheetElement);
 		sheetElement.values(
-				new Data("1").put("A", "FFF"),
-				new Data("2").put("A", "a"),
-				new Data("3"));
-
+				Data.create("1").put("A", "FFF"),
+				Data.create("2").put("A", "a"),
+				Data.create("3"));
 		SheetElementSelectableMulti wrapper = SheetElementSelectableMulti.wrap(sheetElement);
 		wrapper.onSelectionChange(evt->{
 		//	DomGlobal.alert(evt.selection()[0]);
@@ -69,9 +68,9 @@ public class Test implements EntryPoint {
 		SheetElementSelectableSingle.header(sheetElement);
 		content.add(sheetElement);
 		sheetElement.values(
-				new Data("1").put("A", "FFF"),
-				new Data("2").put("A", "a"),
-				new Data("3"));
+				Data.create("1").put("A", "FFF"),
+				Data.create("2").put("A", "a"),
+				Data.create("3"));
 	}
 	private void TestColumnNumber() {
 		SheetElement sheetElement = SheetElement.builder()
@@ -84,9 +83,9 @@ public class Test implements EntryPoint {
 		SheetElementSelectableSingle.header(sheetElement);
 		content.add(sheetElement);
 		sheetElement.values(
-				new Data("1").put("A", "FFF"),
-				new Data("2").put("A", "a"),
-				new Data("3"));
+				Data.create("1").put("A", "FFF"),
+				Data.create("2").put("A", "a"),
+				Data.create("3"));
 	}
 	private void TestColumnDate() {
 		SheetElement sheetElement = SheetElement.builder()
@@ -99,9 +98,9 @@ public class Test implements EntryPoint {
 		SheetElementSelectableSingle.header(sheetElement);
 		content.add(sheetElement);
 		sheetElement.values(
-				new Data("1").put("A", "FFF"),
-				new Data("2").put("A", "a"),
-				new Data("3"));
+				Data.create("1").put("A", "FFF"),
+				Data.create("2").put("A", "a"),
+				Data.create("3"));
 	}
 	private void TestColumnText() {
 		SheetElement sheetElement = SheetElement.builder()
@@ -114,9 +113,9 @@ public class Test implements EntryPoint {
 		SheetElementSelectableSingle.header(sheetElement);
 		content.add(sheetElement);
 		sheetElement.values(
-				new Data("1").put("A", "FFF"),
-				new Data("2").put("A", "a"),
-				new Data("3"));
+				Data.create("1").put("A", "FFF"),
+				Data.create("2").put("A", "a"),
+				Data.create("3"));
 	}
 	private void TestColumnLink() {
 		Function<Data, String> m = data->"https://google.co.kr";
@@ -130,9 +129,9 @@ public class Test implements EntryPoint {
 		SheetElementSelectableSingle.header(sheetElement);
 		content.add(sheetElement);
 		sheetElement.values(
-				new Data("1").put("A", "FFF").put("B", "GOOGLE"),
-				new Data("2").put("A", "a"),
-				new Data("3"));
+				Data.create("1").put("A", "FFF").put("B", "GOOGLE"),
+				Data.create("2").put("A", "a"),
+				Data.create("3"));
 	}
 	private void TestColumnDropDown() {
 		SheetElement sheetElement = SheetElement.builder()
@@ -149,9 +148,9 @@ public class Test implements EntryPoint {
 		SheetElementSelectableSingle.header(sheetElement);
 		content.add(sheetElement);
 		sheetElement.values(
-				new Data("1").put("A", "FFF"),
-				new Data("2").put("A", "a"),
-				new Data("3"));
+				Data.create("1").put("A", "FFF"),
+				Data.create("2").put("A", "a"),
+				Data.create("3"));
 	}
 	private void TestMouseEvent() {
 		SheetElement sheetElement = SheetElement.builder()
@@ -168,8 +167,8 @@ public class Test implements EntryPoint {
 		SheetElementSelectableSingle.header(sheetElement);
 		content.add(sheetElement);
 		sheetElement.values(
-				new Data("1").put("A", "FFF"),
-				new Data("2").put("A", "a"),
-				new Data("3"));
+				Data.create("1").put("A", "FFF"),
+				Data.create("2").put("A", "a"),
+				Data.create("3"));
 	}
 }

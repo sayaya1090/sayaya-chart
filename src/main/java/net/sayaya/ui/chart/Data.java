@@ -7,7 +7,6 @@ import jsinterop.annotations.JsMethod;
 import jsinterop.annotations.JsType;
 import jsinterop.base.Js;
 import jsinterop.base.JsPropertyMap;
-import net.sayaya.ui.chart.function.Consumer;
 import net.sayaya.ui.event.HasStateChangeHandlers;
 import net.sayaya.ui.event.HasValueChangeHandlers;
 import org.gwtproject.event.shared.HandlerRegistration;
@@ -24,7 +23,7 @@ public class Data implements HasStateChangeHandlers<Data.DataState>, HasValueCha
 	private final JsArray<StateChangeEventListener<DataState>> stateChangeListeners = JsArray.of();
 	private final JsArray<ValueChangeEventListener<Data>> valueChangeListeners = JsArray.of();
 	private DataState state;
-	public Data(String idx) {
+	private Data(String idx) {
 		this.idx = idx;
 	}
 	@JsMethod
@@ -34,7 +33,6 @@ public class Data implements HasStateChangeHandlers<Data.DataState>, HasValueCha
 	public Data put(String key, String value) {
 		Js.asPropertyMap(this).set(key, value);
 		if(!initialized.has(key)) initialized.set(key, value);
-
 		return this;
 	}
 	public Data delete(String key) {
@@ -54,7 +52,11 @@ public class Data implements HasStateChangeHandlers<Data.DataState>, HasValueCha
 		else return null;
 	}
 	public boolean isChanged(String key) {
-		return !Js.isTripleEqual(trim(Js.asString(initialized.get(key))), trim(Js.asString(get(key))));
+		var v1 = initialized.get(key);
+		var v2 = get(key);
+		if(v1 == null && v2 == null) return false;
+		else if(v1 == null || v2 == null) return true;
+		return !Js.isTripleEqual(trim(Js.asString(v1)), trim(Js.asString(v2)));
 	}
 	private static String trim(String str) {
 		if(str == null) return str;
@@ -95,14 +97,18 @@ public class Data implements HasStateChangeHandlers<Data.DataState>, HasValueCha
 	public enum DataState {
 		UNSELECTED, SELECTED
 	}
-	private native static Data proxy(Data origin, Consumer<Data> consumer) /*-{
+	private native static Data proxy(Data origin, ChangeHandler consumer) /*-{
+	console.log(consumer);
 		var proxy = new Proxy(origin, {
 			set: function(target, key, value, receiver) {
 				var result = Reflect.set(target, key, value, receiver);
-				consumer.accept(target);
+				consumer.@net.sayaya.ui.chart.Data.ChangeHandler::onInvoke(Lnet/sayaya/ui/chart/Data;)(target);
 				return result;
 			}
 		});
 		return proxy;
 	}-*/;
+	private interface ChangeHandler {
+		void onInvoke(Data data);
+	}
 }
