@@ -98,7 +98,6 @@ public class Data implements HasStateChangeHandlers<Data.DataState>, HasValueCha
 		UNSELECTED, SELECTED
 	}
 	private native static Data proxy(Data origin, ChangeHandler consumer) /*-{
-	console.log(consumer);
 		var proxy = new Proxy(origin, {
 			set: function(target, key, value, receiver) {
 				var result = Reflect.set(target, key, value, receiver);
