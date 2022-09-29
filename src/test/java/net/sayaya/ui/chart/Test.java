@@ -1,6 +1,7 @@
 package net.sayaya.ui.chart;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
 import elemental2.dom.DomGlobal;
@@ -46,14 +47,20 @@ public class Test implements EntryPoint {
 				.stretchH("all")
 				.build();
 		content.add(sheetElement);
+		var k = Data.create("1").put("A", "FFF");
+		k.onValueChange(d->k.put("B", "44444.345345345"));
 		sheetElement.values(
-				Data.create("1").put("A", "FFF"),
+				k,
 				Data.create("2").put("A", "a"),
 				Data.create("3"));
 		SheetElementSelectableMulti wrapper = SheetElementSelectableMulti.wrap(sheetElement);
-		wrapper.onSelectionChange(evt->{
-		//	DomGlobal.alert(evt.selection()[0]);
-		});
+		Scheduler.get().scheduleFixedDelay(()->{
+			sheetElement.values(
+					Data.create("1").put("A", "FFF"),
+					Data.create("2").put("A", "b"),
+					Data.create("3"));
+			return false;
+		}, 5000);
 	}
 
 	private void TestMergeCell() {
