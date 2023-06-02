@@ -4,7 +4,6 @@ import elemental2.core.JsArray;
 import elemental2.core.JsObject;
 import elemental2.core.ObjectPropertyDescriptor;
 import elemental2.dom.CustomEvent;
-import elemental2.dom.DomGlobal;
 import jsinterop.annotations.JsIgnore;
 import jsinterop.annotations.JsMethod;
 import jsinterop.annotations.JsType;
@@ -75,6 +74,10 @@ public class Data implements HasStateChangeHandlers<Data.DataState>{
 		else if(v1 == null || v2 == null) return true;
 		return !Js.isTripleEqual(trim(Js.asString(v1)), trim(Js.asString(v2)));
 	}
+	@JsIgnore
+	public boolean isChanged() {
+		return JsObject.keys(initialized).asList().stream().anyMatch(this::isChanged);
+	}
 	private static String trim(String str) {
 		if(str == null) return str;
 		str = str.replace("\r", "").trim();
@@ -99,9 +102,7 @@ public class Data implements HasStateChangeHandlers<Data.DataState>{
 	}
 	@JsIgnore
 	public HandlerRegistration onValueChange(HasValueChangeHandlers.ValueChangeEventListener<Data> listener) {
-		DomGlobal.console.log(valueChangeListeners);
 		valueChangeListeners.push(listener);
-		DomGlobal.console.log(valueChangeListeners);
 		return () -> valueChangeListeners.delete(valueChangeListeners.asList().indexOf(listener));
 	}
 	@JsIgnore
