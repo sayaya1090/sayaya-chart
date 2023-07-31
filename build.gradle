@@ -38,6 +38,7 @@ dependencies {
     implementation("org.gwtproject:gwt-user:2.10.0")
     implementation("org.projectlombok:lombok:1.18.24")
     annotationProcessor("org.projectlombok:lombok:1.18.24")
+    implementation("javax.validation:validation-api:2.0.1.Final")
 }
 ext {
     lombok = project.configurations.annotationProcessor.find { it.name.startsWith("lombok") }

@@ -29,6 +29,7 @@ public class Test implements EntryPoint {
 		TestColumnText();
 		TestColumnLink();
 		TestColumnDropDown();
+		TestColumnChip();
 		TestMouseEvent();
 	}
 
@@ -157,6 +158,21 @@ public class Test implements EntryPoint {
 		sheetElement.values(
 				Data.create("1").put("A", "FFF"),
 				Data.create("2").put("A", "a"),
+				Data.create("3"));
+	}
+	private void TestColumnChip() {
+		SheetElement sheetElement = SheetElement.builder()
+				.columns(
+						ColumnBuilder.string("A").name("A").pattern("^a$").than("red","yellow").color("blue").build(),
+						ColumnBuilder.chip("B").readOnly(true).build(),
+						ColumnBuilder.chip("C").build())
+				.stretchH("all")
+				.build();
+		SheetElementSelectableSingle.header(sheetElement);
+		content.add(sheetElement);
+		sheetElement.values(
+				Data.create("1").put("A", "FFF").put("C", "FFF,ddd,eee,ccc=f44,ddd\\,eeew"),
+				Data.create("2").put("A", "a").put("B", "FFF,ddd,eee,ccc=f44,ddd\\,eeew"),
 				Data.create("3"));
 	}
 	private void TestMouseEvent() {

@@ -25,4 +25,7 @@ public interface ColumnBuilder {
 	static ColumnDropDown dropdown(String id, ListElement.SingleLineItem... list) {
 		return new ColumnDropDown(id, list);
 	}
+	static ColumnChip chip(String id) {
+		return new ColumnChip(id);
+	}
 }
