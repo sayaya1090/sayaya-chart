@@ -136,6 +136,7 @@ public class SheetElement extends HTMLElementBuilder<HTMLDivElement, SheetElemen
 		private String preventOverflow;
 		private boolean disableVisualSelection;
 		private Change beforeChange;
+		private Object rowHeights;
 		private Object colWidths;
 		private MergeCell[] mergeCells;
 		// Events
