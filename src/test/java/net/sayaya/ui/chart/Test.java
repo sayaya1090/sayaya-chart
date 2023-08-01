@@ -163,9 +163,9 @@ public class Test implements EntryPoint {
 	private void TestColumnChip() {
 		SheetElement sheetElement = SheetElement.builder()
 				.columns(
-						ColumnBuilder.string("A").name("A").pattern("^a$").than("red","yellow").color("blue").build(),
-						ColumnBuilder.chip("B").readOnly(true).build(),
-						ColumnBuilder.chip("C").build())
+						ColumnBuilder.string("A").width(9).name("A").pattern("^a$").than("red","yellow").color("blue").build(),
+						ColumnBuilder.chip("B").width(3).readOnly(true).build(),
+						ColumnBuilder.chip("C").width(3).build())
 				.stretchH("all")
 				.build();
 		SheetElementSelectableSingle.header(sheetElement);

@@ -1,26 +1,23 @@
 package net.sayaya.ui.chart.column;
 
-import elemental2.core.JsRegExp;
-import elemental2.core.RegExpResult;
-import elemental2.dom.CSSProperties;
-import elemental2.dom.DomGlobal;
-import elemental2.dom.HTMLElement;
+import com.google.gwt.core.client.Scheduler;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.experimental.Delegate;
 import net.sayaya.ui.ChipElement;
-import net.sayaya.ui.ChipSetElement;
-import net.sayaya.ui.TextFieldElement;
 import net.sayaya.ui.chart.Column;
 import net.sayaya.ui.chart.Data;
+import org.jboss.elemento.EventType;
 
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import static org.jboss.elemento.Elements.span;
+import static org.jboss.elemento.Elements.*;
 
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 @Setter
@@ -39,49 +36,43 @@ public class ColumnChip implements ColumnBuilder {
         Column column = defaultHelper.build().data(id);
         return column.readOnly(true).renderer((sheet, td, row, col, prop, value, ci)->{
             Data data = sheet.spreadsheet.values()[row];
-
             alignHelper.clear(td);
             colorHelper.clear(td);
             for(ColumnStyleColorConditionalHelper<?> helper: colorConditionalHelpers) helper.clear(td);
             alignHelper.apply(td, row, prop, value);
             colorHelper.apply(td, row, prop, value);
             dataChangeHelper.apply(sheet, td, row, prop);
-            for(ColumnStyleColorConditionalHelper<?> helper: colorConditionalHelpers) helper.apply(td, row, prop, value);
-            alignHelper.apply(td, row, prop, value);
+            // for(ColumnStyleColorConditionalHelper<?> helper: colorConditionalHelpers) helper.apply(td, row, prop, value);
+            // alignHelper.apply(td, row, prop, value);
 
-            var elem = ChipSetElement.chips();
+            var elem = div().style("display: flex; flex-direction: row; flex-wrap: wrap; gap: 8px; margin: 4px; align-items: center;");
             if(value==null) value = "";
             var match = value.split(SPLITTER);
-            var tokens = Arrays.stream(match).filter(k->k!=null && !k.isEmpty());
-            if (readOnly()) tokens.map(ChipElement::chip).forEach(elem::add);
+            var tokens = Arrays.stream(match).filter(k->k!=null && !k.isEmpty()).map(text->{
+                if(text.contains("\\,")) return text.replace("\\,", ",");
+                return text;
+
+            });
+            var chipStyle = "background-color: transparent; border: 1px solid #AAA; border-radius: 8px;";
+            if (readOnly()) tokens.map(ChipElement::chip).peek(e->e.style(chipStyle)).forEach(e->elem.add(e));
             else {
-                tokens.map(token->ChipElement.check(token).removable()).forEach(elem::add);
-                elem.element().append(TextFieldElement.textBox().filled().element());
+                tokens.map(token->ChipElement.check(token).removable()).peek(e->e.style(chipStyle)).forEach(e->elem.add(e));
+                var input = input("text").style("background: transparent; border: none; outline: none;");
+                input.on(EventType.click, evt->input.element().focus());
+                input.on(EventType.keydown, evt->{
+                    evt.stopPropagation();
+                    if("Enter".equalsIgnoreCase(evt.key)) Scheduler.get().scheduleDeferred(()->td.getElementsByTagName("input").asList().get(0).focus());
+                });
+                input.on(EventType.change, evt->{
+                    var text = input.element().value;
+                    if(text.contains(",")) text = text.replace(",", "\\,");
+                    String nextValue = Stream.concat(Arrays.stream(match), Stream.of(text)).collect(Collectors.joining(","));
+                    sheet.setDataAtCell(row, col, nextValue);
+                });
+                elem.add(input);
             }
-
-            /*
-            ListElement<ListElement.SingleLineItem> list = ListElement.singleLineList().add(ListElement.singleLine().label(""));
-            for(var item: this.list) list.add(ListElement.singleLine().label(item.value()));
-            DropDownElement elem = DropDownElement.filled(list).select(value);*/
-            elem.onValueChange(evt->{
-                var v = evt.value();
-                //data.put(id, v);
-                colorHelper.clear(td);
-                for(ColumnStyleColorConditionalHelper<?> helper: colorConditionalHelpers) helper.clear(td);
-
-                //colorHelper.apply(td, row, prop, v);
-                dataChangeHelper.apply(sheet, td, row, prop);
-                //for(ColumnStyleColorConditionalHelper<?> helper: colorConditionalHelpers) helper.apply(td, row, prop, v);
-            });
-            elem.element().getElementsByClassName("mdc-line-ripple").asList().stream().map(e->(HTMLElement)e).forEach(e-> e.style.display = "none");
-            elem.element().getElementsByClassName("mdc-select__anchor").asList().stream().map(e->(HTMLElement)e).findFirst().ifPresent(e-> e.style.height = CSSProperties.HeightUnionType.of("100%"));
-            elem.element().getElementsByClassName("mdc-select__selected-text").asList().stream().map(e->(HTMLElement)e).findFirst().ifPresent(e->{
-                e.style.color = "inherit";
-                e.style.textAlign = "inherit";
-            });
             td.innerHTML = "";
-            td.style.padding = CSSProperties.PaddingUnionType.of("0");
-            td.appendChild(elem.element());
+            td.append(elem.element());
             return td;
         }).headerRenderer(n->span().textContent(defaultHelper.name()).element());
     }
