@@ -1,6 +1,7 @@
 package net.sayaya.ui.chart.column;
 
 import com.google.gwt.core.client.Scheduler;
+import elemental2.dom.HTMLElement;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -14,6 +15,7 @@ import org.jboss.elemento.EventType;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -29,7 +31,7 @@ public class ColumnChip implements ColumnBuilder {
     private final ColumnStyleDataChangeHelper<ColumnChip> dataChangeHelper = new ColumnStyleDataChangeHelper<>(()->this);
     @Delegate(excludes = ColumnStyleHelper.class) private final ColumnStyleColorHelper<ColumnChip> colorHelper = new ColumnStyleColorHelper<>(()->this);
     private final List<ColumnStyleColorConditionalHelper<ColumnChip>> colorConditionalHelpers = new LinkedList<>();
-    @Delegate(excludes = ColumnStyleHelper.class) private final ColumnStyleAlignHelper<ColumnChip> alignHelper = new ColumnStyleAlignHelper<>(()->this);
+    @Delegate(excludes = ColumnStyleHelper.class) private final ColumnStyleFlexAlignHelper<ColumnChip> alignHelper = new ColumnStyleFlexAlignHelper<>(()->this);
 
     @Override
     public Column build() {
@@ -42,8 +44,6 @@ public class ColumnChip implements ColumnBuilder {
             alignHelper.apply(td, row, prop, value);
             colorHelper.apply(td, row, prop, value);
             dataChangeHelper.apply(sheet, td, row, prop);
-            // for(ColumnStyleColorConditionalHelper<?> helper: colorConditionalHelpers) helper.apply(td, row, prop, value);
-            // alignHelper.apply(td, row, prop, value);
 
             var elem = div().style("display: flex; flex-direction: row; flex-wrap: wrap; gap: 8px; margin: 4px; align-items: center;");
             if(value==null) value = "";
@@ -73,6 +73,8 @@ public class ColumnChip implements ColumnBuilder {
             }
             td.innerHTML = "";
             td.append(elem.element());
+            // for(ColumnStyleColorConditionalHelper<?> helper: colorConditionalHelpers) helper.apply(td, row, prop, value);
+            alignHelper.apply(td, row, prop, value);
             return td;
         }).headerRenderer(n->span().textContent(defaultHelper.name()).element());
     }
@@ -80,5 +82,42 @@ public class ColumnChip implements ColumnBuilder {
         ColumnStyleColorConditionalHelper<ColumnChip> helper = new ColumnStyleColorConditionalHelper<>(pattern, ()->this);
         colorConditionalHelpers.add(helper);
         return helper;
+    }
+    public final class ColumnStyleFlexAlignHelper<SELF> implements ColumnStyleHelper<SELF> {
+        private final Supplier<SELF> _self;
+        private String horizontal;
+        private String vertical;
+        public ColumnStyleFlexAlignHelper(Supplier<SELF> columnBuilder) {
+            _self = columnBuilder;
+        }
+        @Override
+        public HTMLElement apply(HTMLElement td, int row, String prop, String value) {
+            var children = td.getElementsByTagName("div").asList();
+            if(children.size()<=0) return td;
+            var flex = (HTMLElement) children.get(0);
+            if(horizontal !=null)	flex.style.justifyContent = horizontal;
+            if(vertical!=null)  	flex.style.alignContent   = vertical;
+            return td;
+        }
+        @Override
+        public SELF clear(HTMLElement td) {
+            var children = td.getElementsByTagName("div").asList();
+            if(children.size()<=0) return that();
+            var flex = (HTMLElement) children.get(0);
+            flex.style.removeProperty("justifyContent");
+            flex.style.removeProperty("align-items");
+            return that();
+        }
+        public SELF horizontal(String horizontal) {
+            this.horizontal = horizontal;
+            return that();
+        }
+        public SELF vertical(String vertical) {
+            this.vertical = vertical;
+            return that();
+        }
+        private SELF that() {
+            return _self.get();
+        }
     }
 }
