@@ -116,7 +116,7 @@ public class ColumnChip implements net.sayaya.ui.chart.column.ColumnBuilder {
             if(children.size()<=0) return that();
             var flex = (HTMLElement) children.get(0);
             flex.style.removeProperty("justifyContent");
-            flex.style.removeProperty("align-items");
+            flex.style.removeProperty("alignContent");
             return that();
         }
         public SELF horizontal(String horizontal) {
