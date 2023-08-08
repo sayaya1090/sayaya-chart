@@ -2,6 +2,7 @@ package net.sayaya.ui.chart.column;
 
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.regexp.shared.RegExp;
+import elemental2.dom.CSSProperties;
 import elemental2.dom.HTMLElement;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -44,16 +45,16 @@ public class ColumnChip implements net.sayaya.ui.chart.column.ColumnBuilder {
             alignHelper.apply(td, row, prop, value);
             colorHelper.apply(td, row, prop, value);
             dataChangeHelper.apply(sheet, td, row, prop);
-            var elem = div().style("display: flex; flex-direction: row; flex-wrap: wrap; gap: 8px; margin: 4px; align-items: center;");
+            var elem = div().style("display: flex; flex-direction: row; flex-wrap: wrap; gap: 8px; margin: 4px; width: calc(100% - 8px); height: calc(100% - 8px);");
             if(value==null) value = "";
             var match = value.split(SPLITTER);
             var tokens = Arrays.stream(match).filter(k->k!=null && !k.isEmpty()).map(text->{
                 if(text.contains("\\,")) return text.replace("\\,", ",");
                 return text;
             });
-            if (readOnly()) tokens.map(ChipElement::chip).peek(e->style(e, row, prop)).forEach(elem::add);
+            if (readOnly()) tokens.map(ChipElement::chip).peek(e->style(e, row, prop)).forEach(c->elem.add(c));
             else {
-                tokens.map(token->ChipElement.check(token).removable()).peek(e->style(e, row, prop)).forEach(elem::add);
+                tokens.map(token->ChipElement.check(token).removable()).peek(e->style(e, row, prop)).forEach(c->elem.add(c));
                 var input = input("text").style("background: transparent; border: none; outline: none;");
                 input.on(EventType.click, evt->input.element().focus());
                 input.on(EventType.keydown, evt->{
@@ -77,6 +78,7 @@ public class ColumnChip implements net.sayaya.ui.chart.column.ColumnBuilder {
     private static String DEFAULT_CHIP_STYLE = "background-color: transparent; border: 1px solid #AAA; border-radius: 8px;";
     private void style(ChipElement chip, int row, String prop) {
         chip.style(DEFAULT_CHIP_STYLE);
+        for(var ripple: chip.element().getElementsByClassName("mdc-chip__ripple").asList()) ((HTMLElement)ripple).style.borderRadius = CSSProperties.BorderRadiusUnionType.of("8px");
         String value = chip.text();
         for(ChipStyleColorConditionalHelper<?> helper: colorConditionalHelpers) {
             helper.apply(chip.element(), row, prop, value);
@@ -84,6 +86,7 @@ public class ColumnChip implements net.sayaya.ui.chart.column.ColumnBuilder {
     }
     private void style(ChipElementCheckable chip, int row, String prop) {
         chip.style(DEFAULT_CHIP_STYLE);
+        for(var ripple: chip.element().getElementsByClassName("mdc-chip__ripple").asList()) ((HTMLElement)ripple).style.borderRadius = CSSProperties.BorderRadiusUnionType.of("8px");
         String value = chip.text();
         for(ChipStyleColorConditionalHelper<?> helper: colorConditionalHelpers) {
             helper.apply(chip.element(), row, prop, value);
@@ -120,10 +123,14 @@ public class ColumnChip implements net.sayaya.ui.chart.column.ColumnBuilder {
             return that();
         }
         public SELF horizontal(String horizontal) {
+            if("left".equalsIgnoreCase(vertical)) vertical = "flex-start";
+            if("right".equalsIgnoreCase(vertical)) vertical = "flex-end";
             this.horizontal = horizontal;
             return that();
         }
         public SELF vertical(String vertical) {
+            if("top".equalsIgnoreCase(vertical)) vertical = "flex-start";
+            if("bottom".equalsIgnoreCase(vertical)) vertical = "flex-end";
             this.vertical = vertical;
             return that();
         }
