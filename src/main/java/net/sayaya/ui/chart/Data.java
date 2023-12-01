@@ -14,6 +14,8 @@ import net.sayaya.ui.event.HasValueChangeHandlers;
 import org.gwtproject.event.shared.HandlerRegistration;
 
 import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 
 @JsType
 public class Data implements HasStateChangeHandlers<Data.DataState>{
@@ -29,7 +31,7 @@ public class Data implements HasStateChangeHandlers<Data.DataState>{
 	@JsIgnore
 	private final JsPropertyMap<Object> initialized = JsPropertyMap.of();
 	@JsIgnore
-	private final JsArray<StateChangeEventListener<DataState>> stateChangeListeners = JsArray.of();
+	private final List<StateChangeEventListener<DataState>> stateChangeListeners = new LinkedList<>();
 	@JsIgnore
 	private final JsArray<HasValueChangeHandlers.ValueChangeEventListener<Data>> valueChangeListeners = JsArray.of();
 	@JsIgnore
@@ -87,7 +89,7 @@ public class Data implements HasStateChangeHandlers<Data.DataState>{
 	@JsIgnore
 	@Override
 	public Collection<StateChangeEventListener<DataState>> listeners() {
-		return stateChangeListeners.asList();
+		return stateChangeListeners;
 	}
 	@Override
 	@JsIgnore

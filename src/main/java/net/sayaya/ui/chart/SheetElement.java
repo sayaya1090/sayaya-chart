@@ -208,7 +208,8 @@ public class SheetElement extends HTMLElementBuilder<HTMLDivElement, SheetElemen
 		@JsOverlay
 		public SheetConfiguration delete(String id) {
 			if(data == null) return this;
-			JsArray.asJsArray(data).forEach((d, i, arr)->{
+			var arr = JsArray.asJsArray(data);
+			arr.forEach((d, i)->{
 				if(id.equals(d.idx())) arr.splice(i, 1);
 				return null;
 			});
