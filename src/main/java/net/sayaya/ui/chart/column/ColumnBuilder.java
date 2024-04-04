@@ -1,8 +1,8 @@
 package net.sayaya.ui.chart.column;
 
-import net.sayaya.ui.ListElement;
 import net.sayaya.ui.chart.Column;
 import net.sayaya.ui.chart.Data;
+import net.sayaya.ui.dom.MdSelectOptionElement;
 
 import java.util.function.Function;
 
@@ -22,7 +22,7 @@ public interface ColumnBuilder {
 	static ColumnCheckBox checkbox(String id) {
 		return new ColumnCheckBox(id);
 	}
-	static ColumnDropDown dropdown(String id, ListElement.SingleLineItem... list) {
+	static ColumnDropDown dropdown(String id, MdSelectOptionElement... list) {
 		return new ColumnDropDown(id, list);
 	}
 	static ColumnChip chip(String id) {

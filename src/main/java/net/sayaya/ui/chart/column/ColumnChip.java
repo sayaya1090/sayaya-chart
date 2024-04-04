@@ -2,16 +2,14 @@ package net.sayaya.ui.chart.column;
 
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.regexp.shared.RegExp;
-import elemental2.dom.CSSProperties;
 import elemental2.dom.HTMLElement;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.experimental.Delegate;
-import net.sayaya.ui.ChipElement;
-import net.sayaya.ui.ChipElementCheckable;
 import net.sayaya.ui.chart.Column;
+import net.sayaya.ui.dom.MdChipElement;
 import org.jboss.elemento.EventType;
 
 import java.util.Arrays;
@@ -52,9 +50,17 @@ public class ColumnChip implements net.sayaya.ui.chart.column.ColumnBuilder {
                 if(text.contains("\\,")) return text.replace("\\,", ",");
                 return text;
             });
-            if (readOnly()) tokens.map(ChipElement::chip).peek(e->style(e, row, prop)).forEach(c->elem.add(c));
+            if (readOnly()) tokens.map(token-> {
+                var chip = htmlContainer("md-assist-chip", MdChipElement.MdAssistChipElement.class);
+                chip.element().label = token;
+                return chip;
+            }).peek(e->style(e.element(), row, prop)).forEach(elem::add);
             else {
-                tokens.map(token->ChipElement.check(token).removable()).peek(e->style(e, row, prop)).forEach(c->elem.add(c));
+                tokens.map(token->{
+                    var chip = htmlContainer("md-input-chip", MdChipElement.MdInputChipElement.class);
+                    chip.element().label = token;
+                    return chip;
+                }).peek(e->style(e.element(), row, prop)).forEach(c->elem.add(c));
                 var input = input("text").style("background: transparent; border: none; outline: none;");
                 input.on(EventType.click, evt->input.element().focus());
                 input.on(EventType.keydown, evt->{
@@ -75,21 +81,16 @@ public class ColumnChip implements net.sayaya.ui.chart.column.ColumnBuilder {
             return td;
         }).headerRenderer(n->span().textContent(defaultHelper.name()).element());
     }
-    private static String DEFAULT_CHIP_STYLE = "background-color: transparent; border: 1px solid #AAA; border-radius: 8px;";
-    private void style(ChipElement chip, int row, String prop) {
-        chip.style(DEFAULT_CHIP_STYLE);
-        for(var ripple: chip.element().getElementsByClassName("mdc-chip__ripple").asList()) ((HTMLElement)ripple).style.borderRadius = CSSProperties.BorderRadiusUnionType.of("8px");
-        String value = chip.text();
+    private void style(MdChipElement.MdAssistChipElement chip, int row, String prop) {
+        String value = chip.label;
         for(ChipStyleColorConditionalHelper<?> helper: colorConditionalHelpers) {
-            helper.apply(chip.element(), row, prop, value);
+            helper.apply(chip, row, prop, value);
         }
     }
-    private void style(ChipElementCheckable chip, int row, String prop) {
-        chip.style(DEFAULT_CHIP_STYLE);
-        for(var ripple: chip.element().getElementsByClassName("mdc-chip__ripple").asList()) ((HTMLElement)ripple).style.borderRadius = CSSProperties.BorderRadiusUnionType.of("8px");
-        String value = chip.text();
+    private void style(MdChipElement.MdInputChipElement chip, int row, String prop) {
+        String value = chip.label;
         for(ChipStyleColorConditionalHelper<?> helper: colorConditionalHelpers) {
-            helper.apply(chip.element(), row, prop, value);
+            helper.apply(chip, row, prop, value);
         }
     }
     public ChipStyleColorConditionalHelper<ColumnChip> pattern(String pattern) {

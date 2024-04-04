@@ -3,7 +3,7 @@ package net.sayaya.ui.chart;
 import com.google.gwt.user.client.Random;
 import elemental2.core.JsArray;
 import elemental2.dom.*;
-import net.sayaya.ui.event.HasSelectionChangeHandlers;
+import net.sayaya.ui.chart.event.HasSelectionChangeHandlers;
 import org.gwtproject.event.shared.HandlerRegistration;
 
 import java.util.Arrays;

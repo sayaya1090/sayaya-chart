@@ -6,11 +6,10 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
 import elemental2.dom.DomGlobal;
 import elemental2.dom.HTMLDivElement;
-import net.sayaya.ui.ListElement;
-import net.sayaya.ui.TopBarElement;
 import net.sayaya.ui.chart.column.ColumnBuilder;
+import net.sayaya.ui.dom.MdSelectOptionElement;
 import org.jboss.elemento.Elements;
-import org.jboss.elemento.HtmlContentBuilder;
+import org.jboss.elemento.HTMLContainerBuilder;
 
 import java.util.Date;
 import java.util.function.Function;
@@ -18,7 +17,7 @@ import java.util.function.Function;
 import static org.jboss.elemento.Elements.div;
 
 public class Test implements EntryPoint {
-	private final HtmlContentBuilder<HTMLDivElement> content = div();
+	private final HTMLContainerBuilder<HTMLDivElement> content = div();
 	@Override
 	public void onModuleLoad() {
 		LayoutTest();
@@ -34,8 +33,8 @@ public class Test implements EntryPoint {
 	}
 
 	void LayoutTest() {
-		TopBarElement.TopBarButton menu = TopBarElement.buttonNavigation("menu");
-		HtmlContentBuilder<HTMLDivElement> div = div().add(content);
+		// TopBarElement.TopBarButton menu = TopBarElement.buttonNavigation("menu");
+		var div = div().add(content);
 		Elements.body().add(div);
 	}
 
@@ -141,16 +140,22 @@ public class Test implements EntryPoint {
 				Data.create("2").put("A", "a"),
 				Data.create("3"));
 	}
+	private final MdSelectOptionElement dropdownItem(String label) {
+		MdSelectOptionElement item = new MdSelectOptionElement();
+		item.value = label;
+		item.textContent = label;
+		return item;
+	}
 	private void TestColumnDropDown() {
 		SheetElement sheetElement = SheetElement.builder()
 				.columns(
 						ColumnBuilder.string("A").name("A").pattern("^a$").than("red","yellow").color("blue").build(),
 						ColumnBuilder.text("B", 30, 100).horizontal("right").pattern("^a").than("red", "yellow").build(),
 						ColumnBuilder.dropdown("C",
-								ListElement.singleLine().label("A"),
-								ListElement.singleLine().label("B"),
-								ListElement.singleLine().label("C"),
-								ListElement.singleLine().label("D")).build())
+								dropdownItem("A"),
+								dropdownItem("B"),
+								dropdownItem("C"),
+								dropdownItem("D")).name("C").build())
 				.stretchH("all")
 				.build();
 		SheetElementSelectableSingle.header(sheetElement);

@@ -1,6 +1,9 @@
 package net.sayaya.ui.chart.column;
 
-import elemental2.dom.*;
+import elemental2.dom.Element;
+import elemental2.dom.HTMLAnchorElement;
+import elemental2.dom.HTMLElement;
+import elemental2.dom.HTMLInputElement;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.Delegate;
@@ -9,9 +12,8 @@ import net.sayaya.ui.chart.Data;
 import net.sayaya.ui.chart.function.CellEditor;
 import net.sayaya.ui.chart.function.CellEditorFactory;
 import net.sayaya.ui.chart.function.Consumer;
-import org.jboss.elemento.EventCallbackFn;
 import org.jboss.elemento.EventType;
-import org.jboss.elemento.HtmlContentBuilder;
+import org.jboss.elemento.HTMLContainerBuilder;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -57,7 +59,7 @@ public final class ColumnLink implements ColumnBuilder {
 			td.innerHTML = "";
 			if(value!=null && !value.trim().isEmpty()) {
 				String url = mapper.apply(data);
-				HtmlContentBuilder<HTMLAnchorElement> a = a(url, target != null ? target : "_blank").add(value);
+				HTMLContainerBuilder<HTMLAnchorElement> a = a(url, target != null ? target : "_blank").add(value);
 				if(callbackFn!=null) a.on(EventType.click, evt->{
 					evt.stopPropagation();
 					evt.preventDefault();

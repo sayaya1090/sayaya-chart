@@ -9,17 +9,17 @@ import jsinterop.base.Js;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import net.sayaya.ui.HTMLElementBuilder;
 import net.sayaya.ui.chart.function.AfterGetColumnHeaderRenderers;
 import net.sayaya.ui.chart.function.AfterGetRowHeaderRenderers;
 import net.sayaya.ui.chart.function.MouseEventHandler;
-import org.jboss.elemento.HtmlContentBuilder;
+import org.jboss.elemento.HTMLContainerBuilder;
+import org.jboss.elemento.HTMLElementBuilder;
 
 import java.util.Arrays;
 
 import static org.jboss.elemento.Elements.div;
 
-public class SheetElement extends HTMLElementBuilder<HTMLDivElement, SheetElement> {
+public class SheetElement extends HTMLElementBuilder<HTMLDivElement> {
 	public static SheetConfiguration builder() {
 		return new SheetConfiguration();
 	}
@@ -28,8 +28,8 @@ public class SheetElement extends HTMLElementBuilder<HTMLDivElement, SheetElemen
 	SheetElement(SheetConfiguration setting) {
 		this(div(), setting);
 	}
-	private SheetElement(HtmlContentBuilder<HTMLDivElement> e, SheetConfiguration setting) {
-		super(e);
+	private SheetElement(HTMLContainerBuilder<HTMLDivElement> e, SheetConfiguration setting) {
+		super(e.element());
 		this.configuration = setting;
 		table = new Handsontable(e.element(), setting);
 		Js.asPropertyMap(table).set("spreadsheet", this);
@@ -208,7 +208,8 @@ public class SheetElement extends HTMLElementBuilder<HTMLDivElement, SheetElemen
 		@JsOverlay
 		public SheetConfiguration delete(String id) {
 			if(data == null) return this;
-			JsArray.asJsArray(data).forEach((d, i, arr)->{
+			var arr = JsArray.asJsArray(data);
+			arr.forEach((d, i)->{
 				if(id.equals(d.idx())) arr.splice(i, 1);
 				return null;
 			});

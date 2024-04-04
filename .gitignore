@@ -163,3 +163,5 @@ $RECYCLE.BIN/
 /ui.iml
 /gradlew.bat
 /test/webap/test/*
+
+gradle.properties
