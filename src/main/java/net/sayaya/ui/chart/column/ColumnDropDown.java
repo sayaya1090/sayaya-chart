@@ -66,8 +66,7 @@ public final class ColumnDropDown implements ColumnBuilder {
 			});
 			td.innerHTML = "";
 			td.style.padding = CSSProperties.PaddingUnionType.of("0");
-			td.style.whiteSpace = "normal";
-			td.appendChild(elem.element());
+			td.appendChild(elem.style("width", "100%").style("white-space", "normal").element());
 			return td;
 		}).headerRenderer(n->span().textContent(defaultHelper.name()).element());
 	}
