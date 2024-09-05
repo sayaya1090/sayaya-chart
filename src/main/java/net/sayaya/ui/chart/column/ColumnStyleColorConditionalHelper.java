@@ -1,6 +1,7 @@
 package net.sayaya.ui.chart.column;
 
 import com.google.gwt.regexp.shared.RegExp;
+import elemental2.dom.DomGlobal;
 import elemental2.dom.HTMLElement;
 
 import java.util.function.Supplier;
@@ -26,7 +27,7 @@ public final class ColumnStyleColorConditionalHelper<SELF> implements ColumnStyl
 	@Override
 	public SELF clear(HTMLElement td) {
 		td.style.removeProperty("color");
-		td.style.removeProperty("backgroundColor");
+		td.style.removeProperty("background-color");
 		return that();
 	}
 	public SELF than(String color) {

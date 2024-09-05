@@ -22,7 +22,7 @@ public interface ColumnBuilder {
 	static ColumnCheckBox checkbox(String id) {
 		return new ColumnCheckBox(id);
 	}
-	static ColumnDropDown dropdown(String id, MdSelectOptionElement... list) {
+	static ColumnDropDown dropdown(String id, String... list) {
 		return new ColumnDropDown(id, list);
 	}
 	static ColumnChip chip(String id) {

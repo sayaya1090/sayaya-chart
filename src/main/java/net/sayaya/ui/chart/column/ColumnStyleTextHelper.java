@@ -24,10 +24,10 @@ public final class ColumnStyleTextHelper<SELF> implements ColumnStyleHelper<SELF
 	}
 	@Override
 	public SELF clear(HTMLElement td) {
-		td.style.removeProperty("fontFamily");
-		td.style.removeProperty("fontSize");
-		td.style.removeProperty("fontWeight");
-		td.style.removeProperty("fontStyle");
+		td.style.removeProperty("font-family");
+		td.style.removeProperty("font-size");
+		td.style.removeProperty("font-weight");
+		td.style.removeProperty("font-style");
 		return that();
 	}
 	public SELF font(String font) {

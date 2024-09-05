@@ -19,8 +19,8 @@ public final class ColumnStyleAlignHelper<SELF> implements ColumnStyleHelper<SEL
 	}
 	@Override
 	public SELF clear(HTMLElement td) {
-		td.style.removeProperty("textAlign");
-		td.style.removeProperty("verticalAlign");
+		td.style.removeProperty("text-align");
+		td.style.removeProperty("vertical-align");
 		return that();
 	}
 	public SELF horizontal(String horizontal) {

@@ -119,8 +119,8 @@ public class ColumnChip implements net.sayaya.ui.chart.column.ColumnBuilder {
             var children = td.getElementsByTagName("div").asList();
             if(children.size()<=0) return that();
             var flex = (HTMLElement) children.get(0);
-            flex.style.removeProperty("justifyContent");
-            flex.style.removeProperty("alignContent");
+            flex.style.removeProperty("justify-content");
+            flex.style.removeProperty("align-content");
             return that();
         }
         public SELF horizontal(String horizontal) {
@@ -160,7 +160,7 @@ public class ColumnChip implements net.sayaya.ui.chart.column.ColumnBuilder {
         @Override
         public SELF clear(HTMLElement td) {
             td.style.removeProperty("color");
-            td.style.removeProperty("backgroundColor");
+            td.style.removeProperty("background-color");
             return that();
         }
         public SELF than(String color) {

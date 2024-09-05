@@ -140,22 +140,14 @@ public class Test implements EntryPoint {
 				Data.create("2").put("A", "a"),
 				Data.create("3"));
 	}
-	private final MdSelectOptionElement dropdownItem(String label) {
-		MdSelectOptionElement item = new MdSelectOptionElement();
-		item.value = label;
-		item.textContent = label;
-		return item;
-	}
 	private void TestColumnDropDown() {
 		SheetElement sheetElement = SheetElement.builder()
 				.columns(
 						ColumnBuilder.string("A").name("A").pattern("^a$").than("red","yellow").color("blue").build(),
 						ColumnBuilder.text("B", 30, 100).horizontal("right").pattern("^a").than("red", "yellow").build(),
-						ColumnBuilder.dropdown("C",
-								dropdownItem("A"),
-								dropdownItem("B"),
-								dropdownItem("C"),
-								dropdownItem("D")).name("C").build())
+						ColumnBuilder.dropdown("C", "A", "B", "C", "D").name("C")
+								.pattern("^B$").than("red", "yellow")
+								.pattern("^D$").than("blue", "red").color("blue").build())
 				.stretchH("all")
 				.build();
 		SheetElementSelectableSingle.header(sheetElement);

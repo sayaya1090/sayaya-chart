@@ -47,7 +47,7 @@ public final class ColumnStyleColorRangeHelper<SELF> implements ColumnStyleHelpe
 	@Override
 	public SELF clear(HTMLElement td) {
 		td.style.removeProperty("color");
-		td.style.removeProperty("backgroundColor");
+		td.style.removeProperty("background-color");
 		return that();
 	}
 	public SELF than(String color) {

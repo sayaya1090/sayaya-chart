@@ -20,7 +20,7 @@ public final class ColumnStyleColorHelper<SELF> implements ColumnStyleHelper<SEL
 	@Override
 	public SELF clear(HTMLElement td) {
 		td.style.removeProperty("color");
-		td.style.removeProperty("backgroundColor");
+		td.style.removeProperty("background-color");
 		return that();
 	}
 	public SELF color(String color) {
