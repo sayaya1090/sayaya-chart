@@ -13,6 +13,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Supplier;
 
+import static org.jboss.elemento.Elements.div;
 import static org.jboss.elemento.Elements.span;
 
 public final class ColumnDropDown implements ColumnBuilder {
@@ -45,9 +46,10 @@ public final class ColumnDropDown implements ColumnBuilder {
 				label.style.paddingTop = CSSProperties.PaddingTopUnionType.of("0px");
 				label.style.paddingBottom = CSSProperties.PaddingBottomUnionType.of("0px");
 				label.style.fontSize = CSSProperties.FontSizeUnionType.of("10px");
+				label.style.lineHeight = CSSProperties.LineHeightUnionType.of("20px");
 
 				var field = elem.element().shadowRoot.getElementById("field");
-				field.style.height = CSSProperties.HeightUnionType.of("22px");
+				field.style.height = CSSProperties.HeightUnionType.of("20px");
 				field.style.setProperty("--_outline-width",  "0px");
 				field.style.setProperty("--_hover-outline-width",  "0px");
 				field.style.setProperty("--_focus-outline-width",  "0px");
@@ -67,7 +69,10 @@ public final class ColumnDropDown implements ColumnBuilder {
 			});
 			td.innerHTML = "";
 			td.style.padding = CSSProperties.PaddingUnionType.of("0");
-			td.appendChild(elem.style("width", "100%").style("white-space", "initial").element());
+			td.style.verticalAlign = "middle";
+			td.appendChild(div().style("white-space", "initial")
+					.style("height", "20px")
+					.add(elem.style("width", "100%")).element());
 			return td;
 		}).headerRenderer(n->span().textContent(defaultHelper.name()).element());
 	}
